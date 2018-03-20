@@ -20,7 +20,7 @@ CHUNG, Ha (Esther)
 - hkchung@ucalgary.ca
 
 SCHIJNS, Joshua
-- UCID: 
+- UCID: 10017168
 - jmschijn@ucalgary.ca
 
 Tasks
