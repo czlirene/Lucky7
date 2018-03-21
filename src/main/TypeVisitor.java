@@ -291,9 +291,6 @@ public class TypeVisitor extends ASTVisitor {
 	 *            MarkerAnnotation
 	 * @return boolean : True to visit the children of this node
 	 *
-	 *         TODO: Cannot recognize full qualified names for IMPORTS. Works for
-	 *         java.lang.* e.g. @Test from org.junit.Test appears as
-	 *         <currentPackage>.Test
 	 */
 	@Override
 	public boolean visit(MarkerAnnotation node) {
@@ -310,8 +307,6 @@ public class TypeVisitor extends ASTVisitor {
 	 * type of method add type to types increment reference count return true]
 	 *
 	 * CounterType: REFERENCE
-	 *
-	 * TODO: Get return type parameters -- should be done, please double check
 	 *
 	 * @param node
 	 *            : MethodDeclaration
