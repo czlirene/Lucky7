@@ -30,14 +30,15 @@ Tasks
 	- Remember to check for `.java` file ending (DONE)
 	- Remember to check for `.jar` file ending (DONE)
 	- Recursively find all `.java` and `.jar` files (DONE)
-	- Extract `.jar` files (DONE)
+	- Extract `.jar` files (DONE: Used for Irene's debug, can be ignored)
+	- Dynamically read `.jar` files during execution (DONE, it's done right Patrick?)
 - Convert file contents to string
 	- Done 1 file at a time (DONE)
 	- Should probably save to an ArrayList<String> (DONE)
 - Configure AST parser to parse file contents (DONE)
 - Get Type declaration and reference information
-	- Distribute ASTVisitor node types between all of us
-	- Fix ASTVisitor for discussion board updates
+	- Distribute ASTVisitor node types between all of us (DONE)
+	- Implement ASTVisitor nodes for all reference counts 
 - Error checking for user input
 	- Invalid number of arguments (DONE)
 	- Invalid directory (DONE)
