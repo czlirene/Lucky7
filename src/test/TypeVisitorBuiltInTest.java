@@ -181,16 +181,18 @@ public class TypeVisitorBuiltInTest {
 	 * Parameters are considered references on their own. 
 	 */
 	@Test
-	public void testParameterizedTypes1_Dec_0_Ref_1() {
-		configureParser("public class KFC { List<String> alist; } ", "java.util.List", 0, 1);
+	public void testTypeOfParameterizedTypes_Dec_0_Ref_1() {
+		configureParser("import java.util.List; public class KFC { List<String> alist; } ", "java.util.List", 0, 1);
 	}
 
 	/**
-	 * Testing an ArrayList, looking for reference to java.util.ArrayList
+	 * Testing the parameters inside a type, looking for reference to java.lang.String
 	 * Parameters are considered references on their own. 
 	 */
 	@Test
-	public void testParameterizedTypes2_Dec_0_Ref_1() {
-		configureParser("public class KFC { ArrayList<String> alist; } ", "java.util.ArrayList", 0, 1);
+	public void testParamOfParameterizedTypes_Dec_0_Ref_1() {
+		configureParser("public class KFC { ArrayList<String> alist; } ", "java.lang.String", 0, 1);
 	}
+
+
 }
