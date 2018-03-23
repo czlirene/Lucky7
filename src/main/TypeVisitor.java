@@ -230,11 +230,11 @@ public class TypeVisitor extends ASTVisitor {
 			String type1 = node.getFullyQualifiedName();
 			
 			// Determine what kind of binding this is.
-			// bindtype == 1 if it's a package binding
-			// bindtype == 2 if it's a type binding
-			// bindtype == 3 if it's a field or local variable binding
-			// bindtype == 4 if it's a method or constructor binding
-			// bindtype == 5 if it's a annotation binding
+			// bindtype == 1 if it's a package binding -> DONE
+			// bindtype == 2 if it's a type binding -> DONE
+			// bindtype == 3 if it's a field or local variable binding -> WE DON'T HAVE TO BOTHER
+			// bindtype == 4 if it's a method or constructor binding -> DONE
+			// bindtype == 5 if it's a annotation binding -> DONE
 			// bindtype == 6 if it's a member value pair binding
 			// If the binding null, then set the bindtype to 0
 			IBinding binding = node.resolveBinding();

@@ -248,4 +248,45 @@ public class testCounting {
 		
 		configureParser(source, decExpected, refExpected, 7);
 	}
+	
+	// Something wrong with variable bindings!!! (foo should not be printed, but somehow it is getting printed)
+	// Check if it's just the test case
+	// or if there is actually something wrong with the implementation of the TypeVisitor
+	@Test
+	public void test8() {
+		String source = "package bar; class Other { public Bar method() {Bar foo = new Foo(); return foo; }}";
+		
+		Map<String, Integer> decExpected = new HashMap<String, Integer>();
+		decExpected.put("bar", 0);
+		decExpected.put("bar.Other", 1);
+		decExpected.put("Bar", 0);
+		decExpected.put("Foo", 0);
+		
+		Map<String, Integer> refExpected = new HashMap<String, Integer>();
+		refExpected.put("bar", 1);
+		refExpected.put("bar.Other", 0);
+		refExpected.put("Bar", 2);
+		refExpected.put("Foo", 1);
+		
+		configureParser(source, decExpected, refExpected, 8);
+	}
+	
+	@Test
+	public void test9() {
+		String source = "package bar; class Other {Bar bar = new Foo();}";
+		
+		Map<String, Integer> decExpected = new HashMap<String, Integer>();
+		decExpected.put("bar", 0);
+		decExpected.put("bar.Other", 1);
+		decExpected.put("Bar", 0);
+		decExpected.put("Foo", 0);
+		
+		Map<String, Integer> refExpected = new HashMap<String, Integer>();
+		refExpected.put("bar", 1);
+		refExpected.put("bar.Other", 0);
+		refExpected.put("Bar", 1);
+		refExpected.put("Foo", 1);
+		
+		configureParser(source, decExpected, refExpected, 9);
+	}
 }

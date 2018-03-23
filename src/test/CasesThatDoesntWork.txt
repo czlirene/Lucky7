@@ -1,12 +1,3 @@
-//Expecting ref-count for `bar.Foo` = 1, currently 0
-//		refer to test6
-package bar; 
-class Other { 
-    public Bar method() {
-        return new Foo();
-    }
-}
-
 //Expecting ref for `bar.Foo` = 1, currently 0
 package bar; 
 class Other { 
@@ -15,17 +6,3 @@ class Other {
         return foo;
     }
 }
-
-//Expecting ref for `bar.Foo` = 1, currently 0
-package bar; 
-class Other { 
-    Bar bar = new Foo();
-}
-
-// Expecting ref for `java.util.HashMap` = 2, currently 3
-// 		Seems to be working now, see test case "test1"
-import java.util.HashMap; 
-class Foo { 
-    HashMap map;
-}
-
