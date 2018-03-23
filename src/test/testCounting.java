@@ -75,7 +75,7 @@ public class testCounting {
 				fail( "\""+expectedDecType +"\" type declaration is not counted");
 		}
 		
-		for (Map.Entry<String, Integer> entry : refmap.entrySet()) {
+		for (Map.Entry<String, Integer> entry : refMapExpected.entrySet()) {
 			
 			String expectedRefType = entry.getKey();
 			int expectedRefCount = entry.getValue();
@@ -168,7 +168,18 @@ public class testCounting {
 	@Test
 	public void test4() {
 		
-		String source = "package test; import java.lang.String; public class Cow {public static String yell() {return \"Moo\";} public int gotMilk() {return 0;} public static void main (String[] args) {Cow betty = new Cow(); String sound = Cow.yell(); int milk = betty.gotMilk(); String[] a = new String[1];}}";
+		String source = "package test; "
+				+ "import java.lang.String; "
+				+ "public class Cow {"
+				+ "public static String yell() {"
+				+ "return \"Moo\";}"
+				+ " public int gotMilk() {"
+				+ "return 0;}"
+				+ " public static void main (String[] args) {"
+				+ "Cow betty = new Cow();"
+				+ " String sound = Cow.yell();"
+				+ " int milk = betty.gotMilk();"
+				+ " String[] a = new String[1];}}";
 
 		Map<String, Integer> decExpected = new HashMap<String, Integer>();
 		decExpected.put("test", 0);
@@ -180,7 +191,7 @@ public class testCounting {
 		Map<String, Integer> refExpected = new HashMap<String, Integer>();
 		refExpected.put("test", 1);
 		refExpected.put("java.lang.String", 6);
-		refExpected.put("test.Cow", 1);
+		refExpected.put("test.Cow", 3);
 		refExpected.put("java.lang.String[]", 3);
 		refExpected.put("int", 2);
 
