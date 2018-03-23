@@ -21,6 +21,16 @@ public class testCounting {
 	private ASTParser parser;
 	
 	// Maybe rename this ???
+	
+	/**
+	 * Counts actual declarations and references and compares them
+	 * to their expected values.
+	 * 
+	 * @param source
+	 * @param decMapExpected
+	 * @param refMapExpected
+	 * @param testNumber
+	 */
 	private static void  configureParser(String source, 
 			Map<String, Integer> decMapExpected, Map<String, Integer> refMapExpected, int testNumber) {
 
@@ -46,9 +56,6 @@ public class testCounting {
 		Map<String, Integer> refmap = v.getRefCount();
 		Map<String, Integer> decmap = v.getDecCount();
 		
-		refmap.remove("void");
-		decmap.remove("void");
-		
 		System.out.println("declaration count(" + testNumber + "): " + decmap);
 		System.out.println("reference count(" + testNumber + "): " + refmap);
 		System.out.println();
@@ -62,11 +69,10 @@ public class testCounting {
 			
 			if (decmap.get(expectedDecType) != null) {
 				int actualDecCount = decmap.get(expectedDecType);
-				
 				assertEquals(expectedDecCount, actualDecCount);
 			}
 			else
-				fail( "\""+expectedDecType +"\" type is not counted");
+				fail( "\""+expectedDecType +"\" type declaration is not counted");
 		}
 		
 		for (Map.Entry<String, Integer> entry : refmap.entrySet()) {
@@ -79,8 +85,7 @@ public class testCounting {
 				assertEquals(expectedRefCount, actualRefCount);
 			}
 			else 
-				fail( "\""+expectedRefType +"\" type is not counted");
-			
+				fail( "\""+expectedRefType +"\" type reference is not counted");	
 		}
 		return;
 	}
@@ -199,5 +204,25 @@ public class testCounting {
 		refExpected.put("java.lang.Long", 3);
 		
 		configureParser(source, decExpected, refExpected, 5);
+	}
+	
+	@Test
+	public void test6() {
+		String source = "package bar; class Other {  public Bar method() {return new Foo();   } }";
+		
+		Map<String, Integer> decExpected = new HashMap<String, Integer>();
+		decExpected.put("bar.Other", 1);
+		decExpected.put("bar", 0);
+		decExpected.put("Bar", 0);
+		decExpected.put("bar.Foo", 0);
+		
+		Map<String, Integer> refExpected = new HashMap<String, Integer>();
+		refExpected.put("bar.Other", 3);
+		refExpected.put("bar", 1);
+		refExpected.put("Bar", 1);
+		refExpected.put("bar.Foo", 1);
+		
+		configureParser(source, decExpected, refExpected, 6);
+		
 	}
 }
