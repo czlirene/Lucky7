@@ -21,7 +21,7 @@ public class testCounting {
 	public void test() {
 		ASTParser parser = ASTParser.newParser(AST.JLS8);
 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
-		String source1 = "package test; public class Cow {public static String yell() {return \"Moo\";} public int gotMilk() {return 0;} public static void main (String[] args) {Cow betty = new Cow(); String sound = Cow.yell(); int milk = betty.gotMilk();}}";
+		String source1 = "import java.util.HashMap; class Foo { HashMap map;}";
 		char[] source2 = source1.toCharArray();
 		parser.setSource(source2);
 		parser.setResolveBindings(true);
@@ -118,7 +118,4 @@ public class testCounting {
 		System.out.println("declaration count (2): " + decmap);
 		System.out.println("reference count (2): " + refmap);
 	}
-	
-	
-
 }
