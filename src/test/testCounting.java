@@ -21,6 +21,16 @@ public class testCounting {
 	private ASTParser parser;
 	
 	// Maybe rename this ???
+	
+	/**
+	 * Counts actual declarations and references and compares them
+	 * to their expected values.
+	 * 
+	 * @param source
+	 * @param decMapExpected
+	 * @param refMapExpected
+	 * @param testNumber
+	 */
 	private static void  configureParser(String source, 
 			Map<String, Integer> decMapExpected, Map<String, Integer> refMapExpected, int testNumber) {
 
@@ -46,9 +56,6 @@ public class testCounting {
 		Map<String, Integer> refmap = v.getRefCount();
 		Map<String, Integer> decmap = v.getDecCount();
 		
-		refmap.remove("void");
-		decmap.remove("void");
-		
 		System.out.println("declaration count(" + testNumber + "): " + decmap);
 		System.out.println("reference count(" + testNumber + "): " + refmap);
 		System.out.println();
@@ -62,14 +69,13 @@ public class testCounting {
 			
 			if (decmap.get(expectedDecType) != null) {
 				int actualDecCount = decmap.get(expectedDecType);
-				
 				assertEquals(expectedDecCount, actualDecCount);
 			}
 			else
-				fail( "\""+expectedDecType +"\" type is not counted");
+				fail( "\""+expectedDecType +"\" type declaration is not counted");
 		}
 		
-		for (Map.Entry<String, Integer> entry : refmap.entrySet()) {
+		for (Map.Entry<String, Integer> entry : refMapExpected.entrySet()) {
 			
 			String expectedRefType = entry.getKey();
 			int expectedRefCount = entry.getValue();
@@ -79,8 +85,7 @@ public class testCounting {
 				assertEquals(expectedRefCount, actualRefCount);
 			}
 			else 
-				fail( "\""+expectedRefType +"\" type is not counted");
-			
+				fail( "\""+expectedRefType +"\" type reference is not counted");	
 		}
 		return;
 	}
@@ -163,7 +168,18 @@ public class testCounting {
 	@Test
 	public void test4() {
 		
-		String source = "package test; import java.lang.String; public class Cow {public static String yell() {return \"Moo\";} public int gotMilk() {return 0;} public static void main (String[] args) {Cow betty = new Cow(); String sound = Cow.yell(); int milk = betty.gotMilk(); String[] a = new String[1];}}";
+		String source = "package test; "
+				+ "import java.lang.String; "
+				+ "public class Cow {"
+				+ "public static String yell() {"
+				+ "return \"Moo\";}"
+				+ " public int gotMilk() {"
+				+ "return 0;}"
+				+ " public static void main (String[] args) {"
+				+ "Cow betty = new Cow();"
+				+ " String sound = Cow.yell();"
+				+ " int milk = betty.gotMilk();"
+				+ " String[] a = new String[1];}}";
 
 		Map<String, Integer> decExpected = new HashMap<String, Integer>();
 		decExpected.put("test", 0);
@@ -175,7 +191,7 @@ public class testCounting {
 		Map<String, Integer> refExpected = new HashMap<String, Integer>();
 		refExpected.put("test", 1);
 		refExpected.put("java.lang.String", 6);
-		refExpected.put("test.Cow", 1);
+		refExpected.put("test.Cow", 3);
 		refExpected.put("java.lang.String[]", 3);
 		refExpected.put("int", 2);
 
@@ -203,7 +219,26 @@ public class testCounting {
 	
 	@Test
 	public void test6() {
-		String source = "public class X {public X {}}";
+		String source = "package bar; class Other {  public Bar method() {return new Foo();   } }";
+		
+		Map<String, Integer> decExpected = new HashMap<String, Integer>();
+		decExpected.put("bar.Other", 1);
+		decExpected.put("bar", 0);
+		decExpected.put("Bar", 0);
+		decExpected.put("bar.Foo", 0);
+		
+		Map<String, Integer> refExpected = new HashMap<String, Integer>();
+		refExpected.put("bar.Other", 3);
+		refExpected.put("bar", 1);
+		refExpected.put("Bar", 1);
+		refExpected.put("bar.Foo", 1);
+		
+		configureParser(source, decExpected, refExpected, 6);
+	}
+	
+	@Test
+	public void test7() {
+        String source = "public class X {public X {}}";
 		
 		Map<String, Integer> decExpected = new HashMap<String, Integer>();
 		decExpected.put("X", 1);
@@ -211,6 +246,6 @@ public class testCounting {
 		Map<String, Integer> refExpected = new HashMap<String, Integer>();
 		refExpected.put("X", 1);
 		
-		configureParser(source, decExpected, refExpected, 6);
+		configureParser(source, decExpected, refExpected, 7);
 	}
 }
