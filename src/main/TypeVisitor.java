@@ -286,8 +286,14 @@ public class TypeVisitor extends ASTVisitor {
 			// this takes care of the cases where there is a reference to a random class
 			// that has not been implemented.
 			else if (bindtype == 0) {
-				addTypeToList(type1);
-				incRefCount(type1);
+				// see if this is from SimpleType
+				// if it is not, don't count it in
+				ASTNode parent = node.getParent();
+				
+				if (parent.getClass().getName().contains("SimpleType")) {
+					addTypeToList(type1);
+					incRefCount(type1);
+				}
 			}
 
 			// if the bindtype is 4, add the reference counter ONLY IF the node name 

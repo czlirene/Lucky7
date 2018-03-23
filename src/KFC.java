@@ -5,4 +5,8 @@ class Other {
 		Bar foo = new Foo(); 
 		return foo; 
 	}
+	
+	public Bar method() {
+		return new Bar();
+	}
 }
