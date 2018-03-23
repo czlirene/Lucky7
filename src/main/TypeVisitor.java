@@ -282,6 +282,44 @@ public class TypeVisitor extends ASTVisitor {
 		return true;
 	}
 	
-	
+	@Override
+	public boolean visit(VariableDeclarationStatement node){
+		boolean isParameterized = node.getType().isParameterizedType();
+		
+		// get parameterized variables
+		if (isParameterized){
+			ITypeBinding typeBind = node.getType().resolveBinding().getTypeDeclaration();
+			String type = typeBind.getQualifiedName();
+
+			addTypeToList(type);
+			incRefCount(type);
+
+
+			// inc count for all the arguments
+			for (ITypeBinding paramBind : node.getType().resolveBinding().getTypeArguments()){
+				String paramType = paramBind.getQualifiedName();
+				addTypeToList(paramType);
+				incRefCount(paramType);
+			}
+
+		} else {
+			// iterate through all the fragments, and increment the type counter
+			for (Object fragment : node.fragments()){
+				if (fragment instanceof VariableDeclarationFragment){
+					ITypeBinding typeBind = ((VariableDeclarationFragment) fragment).resolveBinding().getType();
+					boolean isDeclaration = ((VariableDeclarationFragment) fragment).getName().isDeclaration();
+					String type = typeBind.getQualifiedName();
+
+					addTypeToList(type);
+					incRefCount(type);
+				}
+			}
+
+		}
+
+
+		return true;
+	}
+
 
 }
