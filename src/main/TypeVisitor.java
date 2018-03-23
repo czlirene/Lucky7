@@ -290,7 +290,5 @@ public class TypeVisitor extends ASTVisitor {
 		incRefCount(type);
 		return true;
 	}
-	
-	
 
 }
