@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// TODO: replace these fuckers with *
 import org.eclipse.jdt.core.dom.*;
 
 /**
@@ -191,48 +190,78 @@ public class TypeVisitor extends ASTVisitor {
 	}
 	
 	/**
-	 * Visits a type declaration node type. Type declaration node is the union of
-	 * class declaration, and interface declaration.
+	 * Visits a SimpleName node type. A simple name is an identifier other
+	 * than a keyword, boolean literal ("true", "false") or null literal ("null").
+	 * SimpleName:
+	 *      Identifier
 	 *
-	 * Determine the type of class, add it to types, and increment the declaration
-	 * counter associated to the type.
+	 * General Algorithm:
+	 * 1. Determine the name of the identifier by calling node.getFullyQualifiedName()
+	 * 2. Determine the name of the identifier after resolving the binding.
+	 * 3. Check if the result from 1 and 2 are the same. If they are, add +1 to the ref count.
 	 *
-	 * CounterType: DECLARATION
-	 *
-	 * @param node
-	 *            : TypeDeclaration
-	 * @return boolean : True to visit the children of this node
-	 */
-	
-	/**
-	 * Visits a type declaration node type. Type declaration node is the union of
-	 * class declaration, and interface declaration.
-	 *
-	 * Determine the type of class, add it to types, and increment the declaration
-	 * counter associated to the type.
-	 *
-	 * CounterType: DECLARATION
+	 * CounterType: REFERENCE
 	 *
 	 * @param node
-	 *            : TypeDeclaration
+	 *            : SimpleName
 	 * @return boolean : True to visit the children of this node
 	 */
 	@Override
 	public boolean visit(SimpleName node) {
+		// isDeclaration() returns true if a name is defined:
+		// the type name in a TypeDeclaration node
+		// the method name in a MethodDeclaration node providing isConstructor is false
+		// The variable name in any type of VariableDeclaration node
+		// The enum type name in a EnumDeclaration node
+		// The enum constant name in an EnumConstantDeclaration node
+		// The variable name in an EnhancedForStatement node
+		// The type variable name in a TypeParameter node
+		// The type name in an AnnotationTypeDeclaration node
+		// The member name in an AnnotationTypeMemberDeclaration node
 		
+		// NOTICE HOW ImportDeclaration and PackageDeclaration types
+		// will ALWAYS pass this, since they are not listed above.
+		// Therefore we can use SimpleName for ImportDeclaration and PackageDeclaration,
+		// except that PackageDeclaration will have typeBind = null (because usually for
+		// packages, we create a name, instead of calling a name; so there is no bind.
+		// So for the PackageDeclaration, we actually need another visit method that
+		// overrides visit(PackageDeclaration node).
 		if (!node.isDeclaration())
 		{
 			String type1 = node.getFullyQualifiedName();
+			
+			// typeBind will be null for the SimpleNames that come from PackageDeclarations
 			ITypeBinding typeBind = node.resolveTypeBinding();
-			System.out.println("type1: " + type1);
 			
 			if (typeBind != null) {
 				String type2 = typeBind.getName();
 				
-				if (type1.equals(type2)) {
-					String type = typeBind.getQualifiedName();
-					addTypeToList(type);
-					incRefCount(type);
+				// taking care of the parameterized types under the SimpleName type
+				if (type2.contains("<") && type2.contains(">")) {
+					// parse out only the identifier part
+					type2 = type2.substring(0, type2.indexOf("<"));
+					
+					// check if the identifier part of the node name is the same as
+					// the identifier of the name after resolving binding.
+					// If they are equal, then add this to the ref count.
+					if (type1.equals(type2)) {
+						String type = typeBind.getQualifiedName();
+						type = type.substring(0, type.indexOf("<"));
+						addTypeToList(type);
+						incRefCount(type);
+					}
+				}
+				
+				// taking care of the rest of the SimpleName types
+				else {
+					// check if the identifier part of the node name is the same as
+					// the identifier of the name after resolving binding.
+					// If they are equal, then add this to the ref count.
+					if (type1.equals(type2)) {
+						String type = typeBind.getQualifiedName();
+						addTypeToList(type);
+						incRefCount(type);
+					}
 				}
 			}
 		}
@@ -240,6 +269,28 @@ public class TypeVisitor extends ASTVisitor {
 		return true;
 	}
 	
+	/**
+	 * Visits a PrimitiveType node type.
+	 * PrimitiveType:
+	 *     { Annotation } byte
+	 *     { Annotation } short
+	 *     { Annotation } char
+	 *     { Annotation } int
+	 *     { Annotation } long
+	 *     { Annotation } float
+	 *     { Annotation } double
+	 *     { Annotation } boolean
+	 *     { Annotation } void
+	 *
+	 * Determine the type of the binding, add it to types, and increment the reference
+	 * counter associated to the type.
+	 *
+	 * CounterType: REFERENCE
+	 *
+	 * @param node
+	 *            : PrimitiveType
+	 * @return boolean : True to visit the children of this node
+	 */
 	@Override
 	public boolean visit(PrimitiveType node) {
 		ITypeBinding typeBind = node.resolveBinding();
@@ -250,6 +301,20 @@ public class TypeVisitor extends ASTVisitor {
 		return true;
 	}
 	
+	/**
+	 * Visits a ArrayType node type.
+	 * ArrayType:
+	 *     Type Dimension { Dimension }
+	 *
+	 * Determine the type of the binding, add it to types, and increment the reference
+	 * counter associated to the type.
+	 *
+	 * CounterType: REFERENCE
+	 *
+	 * @param node
+	 *            : ArrayType
+	 * @return boolean : True to visit the children of this node
+	 */
 	@Override
 	public boolean visit(ArrayType node) {
 		ITypeBinding typeBind = node.resolveBinding();
@@ -260,24 +325,29 @@ public class TypeVisitor extends ASTVisitor {
 		return true;
 	}
 	
+	/**
+	 * Visits a PackageDeclaration node type.
+	 * PackageDeclaration:
+	 *     package Name;
+	 *
+	 * Determine the type of the binding, add it to types, and increment the reference
+	 * counter associated to the type.
+	 * Note: Look at the comments in the visit(SimpleName node) method.
+	 *
+	 * CounterType: REFERENCE
+	 *
+	 * @param node
+	 *            : PackageDeclaration
+	 * @return boolean : True to visit the children of this node
+	 */
 	@Override
 	public boolean visit(PackageDeclaration node) {
 		IPackageBinding typeBind = node.resolveBinding();
+		
 		String type = typeBind.getName();
 		
 		addTypeToList(type);
 		incRefCount(type);
 		return true;
 	}
-	
-	@Override
-	public boolean visit(ImportDeclaration node) {
-		IBinding typeBind = node.resolveBinding();
-		String type = typeBind.getName();
-		
-		addTypeToList(type);
-		incRefCount(type);
-		return true;
-	}
-
 }

@@ -36,7 +36,7 @@ public class testCounting {
 	
 	@Test
 	public void test() {
-		String source1 = "import java.util.HashMap; class Foo { HashMap map;}";
+		String source1 = "package test.testPackage; import java.util.HashMap; class Foo { HashMap map;}";
 		char[] source2 = source1.toCharArray();
 		parser.setSource(source2);
 		
