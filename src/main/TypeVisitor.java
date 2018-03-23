@@ -222,10 +222,9 @@ public class TypeVisitor extends ASTVisitor {
 		// NOTICE HOW ImportDeclaration and PackageDeclaration types
 		// will ALWAYS pass this, since they are not listed above.
 		// Therefore we can use SimpleName for ImportDeclaration and PackageDeclaration;
-		// For PackageDeclaration, we will have typeBind = null (because usually for
-		// packages, we create a name, instead of calling a name; so there is no bind.
-		// So for the PackageDeclaration, we actually need to add +1 to the reference
-		// count even if we get a null after resolving the binding.
+		// However, the PackageDeclaration will have the bindtype of 1,
+		// so it will not be counted in this node -> Gotta count the PackageDeclaration
+		// in a separate node
 		if (!node.isDeclaration())
 		{
 			String type1 = node.getFullyQualifiedName();
@@ -247,8 +246,6 @@ public class TypeVisitor extends ASTVisitor {
 			else {
 				bindtype = binding.getKind();
 			}
-
-			System.out.println(type1 + "'s bind type: " + bindtype);
 			
 			if (bindtype == 2) {
 				ITypeBinding typeBind = node.resolveTypeBinding();
@@ -349,6 +346,30 @@ public class TypeVisitor extends ASTVisitor {
 		
 		addTypeToList(type);
 		incRefCount(type);
+		return true;
+	}
+	
+	/**
+	 * Visits a PackageDeclaration node type
+	 * PackageDeclaration:
+	 *     package Name;
+	 *     
+	 * Get the name of the package, add it to types, and increment the reference
+	 * counter associated to the type.
+	 * 
+	 * CounterType: REFERENCE
+	 * 
+	 * @param node
+	 *            : PackageDeclaration
+	 * @return boolean : True to visit the children of this node
+	 */
+	@Override
+	public boolean visit(PackageDeclaration node) {
+		Name packageName = node.getName();
+		String packageNameInString = packageName.getFullyQualifiedName();
+		
+		addTypeToList(packageNameInString);
+		incRefCount(packageNameInString);
 		return true;
 	}
 }

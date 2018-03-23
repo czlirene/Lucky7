@@ -1,4 +1,4 @@
-package test;
+package test.testSomething;
 import java.util.List; 
 
 public class KFC { 
