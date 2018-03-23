@@ -99,4 +99,22 @@ public class testCounting {
 		System.out.println("declaration count (2): " + decmap);
 		System.out.println("reference count (2): " + refmap);
 	}
+	
+	@Test
+	public void test3() {
+		String source1 = "class Pair<X,Y> { public void printPair( Pair<String,Long> pair){} Pair<String,Long> limit = new Pair<String,Long> (\"maximum\",1024L); String s;} ";
+		char[] source2 = source1.toCharArray();
+		parser.setSource(source2);
+		
+		CompilationUnit cu = (CompilationUnit)parser.createAST(null);
+		
+		TypeVisitor v = new TypeVisitor();
+		cu.accept(v);
+		
+		Map<String, Integer> refmap = v.getRefCount();
+		Map<String, Integer> decmap = v.getDecCount();
+		
+		System.out.println("declaration count (3): " + decmap);
+		System.out.println("reference count (3): " + refmap);
+	}
 }
