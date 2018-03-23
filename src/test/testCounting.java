@@ -200,4 +200,17 @@ public class testCounting {
 		
 		configureParser(source, decExpected, refExpected, 5);
 	}
+	
+	@Test
+	public void test6() {
+		String source = "public class X {public X {}}";
+		
+		Map<String, Integer> decExpected = new HashMap<String, Integer>();
+		decExpected.put("X", 1);
+		
+		Map<String, Integer> refExpected = new HashMap<String, Integer>();
+		refExpected.put("X", 1);
+		
+		configureParser(source, decExpected, refExpected, 6);
+	}
 }

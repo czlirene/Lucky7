@@ -247,6 +247,8 @@ public class TypeVisitor extends ASTVisitor {
 				bindtype = binding.getKind();
 			}
 			
+			System.out.println(type1 + "'s bindtype: " + bindtype);
+			
 			if (bindtype == 2) {
 				ITypeBinding typeBind = node.resolveTypeBinding();
 				String type2 = typeBind.getName();
