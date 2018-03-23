@@ -16,7 +16,7 @@ CHOW, Tyler
 - tyler.chow@ucalgary.ca
 
 CHUNG, Ha (Esther)
-- UCID: 
+- UCID: 10080030
 - hkchung@ucalgary.ca
 
 SCHIJNS, Joshua
