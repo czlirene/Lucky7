@@ -14,4 +14,7 @@ public class Cow {
 		String sound = Cow.yell();
 		int milk = betty.gotMilk();
 	}
+	
+	String [] a;
 }
+

@@ -252,7 +252,6 @@ public class TypeVisitor extends ASTVisitor {
 		if (!node.isDeclaration())
 		{
 			String type1 = node.getFullyQualifiedName();
-			
 			ITypeBinding typeBind = node.resolveTypeBinding();
 			if (typeBind != null) {
 				String type2 = typeBind.getName();
@@ -274,6 +273,16 @@ public class TypeVisitor extends ASTVisitor {
 	
 	@Override
 	public boolean visit(PrimitiveType node) {
+		ITypeBinding typeBind = node.resolveBinding();
+		String type = typeBind.getQualifiedName();
+		
+		addTypeToList(type);
+		incRefCount(type);
+		return true;
+	}
+	
+	@Override
+	public boolean visit(ArrayType node) {
 		ITypeBinding typeBind = node.resolveBinding();
 		String type = typeBind.getQualifiedName();
 		
