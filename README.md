@@ -12,7 +12,7 @@ CHAN, Sze Lok Irene
 - slchan@ucalgary.ca
 
 CHOW, Tyler
-- UCID: 
+- UCID: 30024575
 - tyler.chow@ucalgary.ca
 
 CHUNG, Ha (Esther)
