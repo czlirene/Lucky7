@@ -249,9 +249,6 @@ public class testCounting {
 		configureParser(source, decExpected, refExpected, 7);
 	}
 	
-	// Something wrong with variable bindings!!! (foo should not be printed, but somehow it is getting printed)
-	// Check if it's just the test case
-	// or if there is actually something wrong with the implementation of the TypeVisitor
 	@Test
 	public void test8() {
 		String source = "package bar; class Other { public Bar method() {Bar foo = new Foo(); return foo; }}";
