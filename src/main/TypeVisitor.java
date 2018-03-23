@@ -218,35 +218,6 @@ public class TypeVisitor extends ASTVisitor {
 	 * @return boolean : True to visit the children of this node
 	 */
 	@Override
-	public boolean visit(QualifiedName node) {
-		
-		String type = node.getFullyQualifiedName();
-		
-		
-		
-//		ITypeBinding typeBind = node.resolveBinding();
-//		String type = typeBind.getQualifiedName();
-
-		addTypeToList(type);
-		incRefCount(type);
-
-		return true;
-	}
-	
-	/**
-	 * Visits a type declaration node type. Type declaration node is the union of
-	 * class declaration, and interface declaration.
-	 *
-	 * Determine the type of class, add it to types, and increment the declaration
-	 * counter associated to the type.
-	 *
-	 * CounterType: DECLARATION
-	 *
-	 * @param node
-	 *            : TypeDeclaration
-	 * @return boolean : True to visit the children of this node
-	 */
-	@Override
 	public boolean visit(SimpleName node) {
 		
 		if (!node.isDeclaration())
