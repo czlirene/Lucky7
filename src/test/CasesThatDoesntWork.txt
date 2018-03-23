@@ -22,6 +22,7 @@ class Other {
 }
 
 // Expecting ref for `java.util.HashMap` = 2, currently 3
+// 		Seems to be working now, see test case "testa"
 import java.util.HashMap; 
 class Foo { 
     HashMap map;
