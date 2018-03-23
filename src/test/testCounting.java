@@ -225,20 +225,20 @@ public class testCounting {
 		decExpected.put("bar.Other", 1);
 		decExpected.put("bar", 0);
 		decExpected.put("Bar", 0);
-		decExpected.put("bar.Foo", 0);
+		decExpected.put("Foo", 0);
 		
 		Map<String, Integer> refExpected = new HashMap<String, Integer>();
-		refExpected.put("bar.Other", 3);
+		refExpected.put("bar.Other", 0);
 		refExpected.put("bar", 1);
 		refExpected.put("Bar", 1);
-		refExpected.put("bar.Foo", 1);
+		refExpected.put("Foo", 1);
 		
 		configureParser(source, decExpected, refExpected, 6);
 	}
 	
 	@Test
 	public void test7() {
-        String source = "public class X {public X {}}";
+        String source = "public class X {public X () {}}";
 		
 		Map<String, Integer> decExpected = new HashMap<String, Integer>();
 		decExpected.put("X", 1);

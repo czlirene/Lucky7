@@ -281,11 +281,21 @@ public class TypeVisitor extends ASTVisitor {
 					}
 				}
 			}
-			else {
-				// if the bindtype is 0, add the reference counter;
-				// this takes care of the cases where there is a reference to a random class
-				// that has not been implemented.
-				if (bindtype == 0) {
+			
+			// if the bindtype is 0, add the reference counter;
+			// this takes care of the cases where there is a reference to a random class
+			// that has not been implemented.
+			else if (bindtype == 0) {
+				addTypeToList(type1);
+				incRefCount(type1);
+			}
+
+			// if the bindtype is 4, add the reference counter ONLY IF the node name 
+			// is the same as the identifier of the name after resolving binding.
+			else if (bindtype == 4) {
+				String name = binding.getName();
+				
+				if (name.equals(type1)) {
 					addTypeToList(type1);
 					incRefCount(type1);
 				}
