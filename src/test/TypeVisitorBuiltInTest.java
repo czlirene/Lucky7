@@ -175,4 +175,22 @@ public class TypeVisitorBuiltInTest {
 	public void testVarMethStringArrayWithReturn_String_Dec_0_Ref_3() {
 		configureParser("public class KFC { public String[] Foo(){ String[] str; return new String[]; }} ", "java.lang.String", 0, 3);
 	}
+
+	/**
+	 * Testing a List, looking for reference to java.util.List
+	 * Parameters are considered references on their own. 
+	 */
+	@Test
+	public void testParameterizedTypes1_Dec_0_Ref_1() {
+		configureParser("public class KFC { List<String> alist; } ", "java.util.List", 0, 1);
+	}
+
+	/**
+	 * Testing an ArrayList, looking for reference to java.util.ArrayList
+	 * Parameters are considered references on their own. 
+	 */
+	@Test
+	public void testParameterizedTypes2_Dec_0_Ref_1() {
+		configureParser("public class KFC { ArrayList<String> alist; } ", "java.util.ArrayList", 0, 1);
+	}
 }
