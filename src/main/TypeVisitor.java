@@ -230,10 +230,28 @@ public class TypeVisitor extends ASTVisitor {
 		{
 			String type1 = node.getFullyQualifiedName();
 			
-			// typeBind will be null for the SimpleNames that come from PackageDeclarations
-			ITypeBinding typeBind = node.resolveTypeBinding();
+			// Determine what kind of binding this is.
+			// bindtype == 1 if it's a package binding
+			// bindtype == 2 if it's a type binding
+			// bindtype == 3 if it's a field or local variable binding
+			// bindtype == 4 if it's a method or constructor binding
+			// bindtype == 5 if it's a annotation binding
+			// bindtype == 6 if it's a member value pair binding
+			// If the binding null, then set the bindtype to 0
+			IBinding binding = node.resolveBinding();
+			int bindtype;
 			
-			if (typeBind != null) {
+			if (binding == null) {
+				bindtype = 0;
+			}
+			else {
+				bindtype = binding.getKind();
+			}
+
+			System.out.println(type1 + "'s bind type: " + bindtype);
+			
+			if (bindtype == 2) {
+				ITypeBinding typeBind = node.resolveTypeBinding();
 				String type2 = typeBind.getName();
 				
 				// taking care of the parameterized types under the SimpleName type
@@ -264,13 +282,14 @@ public class TypeVisitor extends ASTVisitor {
 					}
 				}
 			}
-			
-			// taking care of the Package declarations, as well as class types that are
-			// referenced but never actually have a implementation file in Eclipse.
-			// (Meaning that the type will be null after resolving the binding.)
 			else {
-				addTypeToList(type1);
-				incRefCount(type1);
+				// if the bindtype is 0, add the reference counter;
+				// this takes care of the cases where there is a reference to a random class
+				// that has not been implemented.
+				if (bindtype == 0) {
+					addTypeToList(type1);
+					incRefCount(type1);
+				}
 			}
 		}
 
