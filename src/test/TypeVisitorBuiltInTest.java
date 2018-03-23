@@ -74,6 +74,7 @@ public class TypeVisitorBuiltInTest {
 		
 		System.out.println("declaration count: " + decmap);
 		System.out.println("reference count: " + refmap);
+		System.out.println();
 
 		assertEquals(expectedDeclarationCount, decl_count);
 		assertEquals(expectedReferenceCount, ref_count);

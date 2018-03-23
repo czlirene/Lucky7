@@ -22,7 +22,7 @@ public class testCounting {
 	
 	// Maybe rename this ???
 	private static void  configureParser(String source, 
-			Map<String, Integer> decMapExpected, Map<String, Integer> refMapExpected) {
+			Map<String, Integer> decMapExpected, Map<String, Integer> refMapExpected, int testNumber) {
 
 		ASTParser parser = ASTParser.newParser(AST.JLS8);
 		parser.setKind(ASTParser.K_COMPILATION_UNIT);
@@ -46,12 +46,12 @@ public class testCounting {
 		Map<String, Integer> refmap = v.getRefCount();
 		Map<String, Integer> decmap = v.getDecCount();
 		
-		// 
 		refmap.remove("void");
 		decmap.remove("void");
 		
-		System.out.println("declaration count(): " + decmap);
-		System.out.println("reference count(): " + refmap);
+		System.out.println("declaration count(" + testNumber + "): " + decmap);
+		System.out.println("reference count(" + testNumber + "): " + refmap);
+		System.out.println();
 		
 		// Iterates through all entries of the expected decMap
 		// and compares each entry to actual decMap
@@ -59,11 +59,9 @@ public class testCounting {
 			
 			String expectedDecType = entry.getKey();
 			int expectedDecCount = entry.getValue();
-			//System.out.println("decMapExpected: "+ expectedDecType + ", " + expectedDecCount);
 			
 			if (decmap.get(expectedDecType) != null) {
 				int actualDecCount = decmap.get(expectedDecType);
-				//System.out.println("decmap: " + actualDecCount);
 				
 				assertEquals(expectedDecCount, actualDecCount);
 			}
@@ -75,87 +73,54 @@ public class testCounting {
 			
 			String expectedRefType = entry.getKey();
 			int expectedRefCount = entry.getValue();
-			//System.out.println("ref: "+ entry.getKey() + ", " + entry.getValue());
 			
 			if(refmap.get(expectedRefType) != null) {
 				int actualRefCount = refmap.get(expectedRefType);
-				//System.out.println("refExpected: "+refCountExpected);
 				assertEquals(expectedRefCount, actualRefCount);
 			}
 			else 
 				fail( "\""+expectedRefType +"\" type is not counted");
 			
 		}
-		//assertEquals(decMapExpected, decmap);
-		//assertEquals(refMapExpected, refmap);
 		return;
-	}
-
-	// We won't need this
-	@Before
-	public void testBefore() {
-		parser = ASTParser.newParser(AST.JLS8);
-		parser.setKind(ASTParser.K_COMPILATION_UNIT);
-		parser.setResolveBindings(true);
-		parser.setEnvironment(null, null, null, true);
-		parser.setStatementsRecovery(true);
-		parser.setUnitName("Cow");
-		Map<String, String> options = JavaCore.getOptions();
-		options.put(JavaCore.COMPILER_COMPLIANCE, JavaCore.VERSION_1_8);
-		options.put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, JavaCore.VERSION_1_8);
-		options.put(JavaCore.COMPILER_SOURCE, JavaCore.VERSION_1_8);
-		parser.setCompilerOptions(options);
 	}
 	
 	@Test
-	public void testa() {
+	public void test1() {
 		String source = "import java.util.HashMap; class Foo { HashMap map;}"; 
 		
 		Map<String, Integer> decExpected = new HashMap<String, Integer>();
 		decExpected.put("Foo", 1);
 		decExpected.put("java.util.HashMap", 0);
-		decExpected.put("HashMap", 0);
 		
 		Map<String, Integer> refExpected = new HashMap<String, Integer>();
 		refExpected.put("Foo", 0);
 		refExpected.put("java.util.HashMap", 2);
-		refExpected.put("HashMap", 1);
 		
-		configureParser(source, decExpected, refExpected);
+		configureParser(source, decExpected, refExpected, 1);
 
 	}
 	// TODO
 	@Test
-	public void test() {
-		String source1 = "package test.testPackage; import java.util.HashMap; class Foo { HashMap map;}";
-		char[] source2 = source1.toCharArray();
-		parser.setSource(source2);
+	public void test2() {
+		String source = "package test.testPackage; import java.util.HashMap; class Foo { HashMap map;}";
 		
-		CompilationUnit cu = (CompilationUnit)parser.createAST(null);
-		
-		TypeVisitor v = new TypeVisitor();
-		cu.accept(v);
-		
-		Map<String, Integer> refmap = v.getRefCount();
-		Map<String, Integer> decmap = v.getDecCount();
+		Map<String, Integer> decExpected = new HashMap<String, Integer>();
+		decExpected.put("test.testPackage", 0);
+		decExpected.put("test.testPackage.Foo", 1);
+		decExpected.put("java.util.HashMap", 0);
 		
 		Map<String, Integer> refExpected = new HashMap<String, Integer>();
-		refExpected.put("Foo", 0);
+		refExpected.put("test.testPackage", 1);
+		refExpected.put("test.testPackage.Foo", 0);
 		refExpected.put("java.util.HashMap", 2);
-		refExpected.put("HashMap", 1);
 		
-		
-		//System.out.println("refmap = refExpected: " + (refmap.equals(refExpected)));
-		
-		System.out.println("declaration count (0): " + decmap);
-		System.out.println("reference count (0): " + refmap);
-		
-		//assertEquals(refExpected, refmap);
+		configureParser(source, decExpected, refExpected, 2);
 
 	}
 	
 	@Test
-	public void test1() {
+	public void test3() {
 		
 		String source = "public class DoesItWork{\n"
 				+ "private class MaybeWorks{} \n"
@@ -191,18 +156,17 @@ public class testCounting {
 		refExpected.put("DoesItWork.Quark", 0);
 		refExpected.put("PleaseWork", 0);
 		
-		configureParser(source, decExpected, refExpected);
+		configureParser(source, decExpected, refExpected, 3);
 		
 	}
 	
 	@Test
-	public void test2() {
+	public void test4() {
 		
 		String source = "package test; import java.lang.String; public class Cow {public static String yell() {return \"Moo\";} public int gotMilk() {return 0;} public static void main (String[] args) {Cow betty = new Cow(); String sound = Cow.yell(); int milk = betty.gotMilk(); String[] a = new String[1];}}";
 
 		Map<String, Integer> decExpected = new HashMap<String, Integer>();
 		decExpected.put("test", 0);
-		decExpected.put("String", 0);
 		decExpected.put("java.lang.String", 0);
 		decExpected.put("test.Cow", 1);
 		decExpected.put("java.lang.String[]", 0);
@@ -210,32 +174,30 @@ public class testCounting {
 
 		Map<String, Integer> refExpected = new HashMap<String, Integer>();
 		refExpected.put("test", 1);
-		refExpected.put("String", 0);
 		refExpected.put("java.lang.String", 6);
 		refExpected.put("test.Cow", 1);
 		refExpected.put("java.lang.String[]", 3);
 		refExpected.put("int", 2);
 
-		configureParser(source, decExpected, refExpected);
+		configureParser(source, decExpected, refExpected, 4);
 		
 	}
 	
 	// TODO
 	@Test
-	public void test3() {
-		String source1 = "class Pair<X,Y> { public void printPair( Pair<String,Long> pair){} Pair<String,Long> limit = new Pair<String,Long> (\"maximum\",1024L); String s;} ";
-		char[] source2 = source1.toCharArray();
-		parser.setSource(source2);
+	public void test5() {
+		String source = "class Pair<X,Y> { public void printPair( Pair<String,Long> pair){} Pair<String,Long> limit = new Pair<String,Long> (\"maximum\",1024L); String s;} ";
+
+		Map<String, Integer> decExpected = new HashMap<String, Integer>();
+		decExpected.put("Pair", 1);
+		decExpected.put("java.lang.String", 0);
+		decExpected.put("java.lang.Long", 0);
 		
-		CompilationUnit cu = (CompilationUnit)parser.createAST(null);
+		Map<String, Integer> refExpected = new HashMap<String, Integer>();
+		refExpected.put("Pair", 3);
+		refExpected.put("java.lang.String", 4);
+		refExpected.put("java.lang.Long", 3);
 		
-		TypeVisitor v = new TypeVisitor();
-		cu.accept(v);
-		
-		Map<String, Integer> refmap = v.getRefCount();
-		Map<String, Integer> decmap = v.getDecCount();
-		
-		System.out.println("declaration count (3): " + decmap);
-		System.out.println("reference count (3): " + refmap);
+		configureParser(source, decExpected, refExpected, 5);
 	}
 }
