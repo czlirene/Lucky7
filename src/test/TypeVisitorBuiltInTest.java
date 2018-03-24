@@ -8,6 +8,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.junit.After;
 import org.junit.Test;
 
 import main.TypeVisitor;
@@ -22,6 +23,11 @@ import main.TypeVisitor;
  */
 public class TypeVisitorBuiltInTest {
 
+	@After
+	public void after(){
+		TypeVisitor.resetCounters();
+	}
+	
 	/**
 	 * Configures ASTParser and visitor for source file
 	 *
@@ -211,6 +217,14 @@ public class TypeVisitorBuiltInTest {
 	@Test
 	public void testParamOfParameterizedTypes_Dec_0_Ref_1() {
 		configureParser("import java.util.ArrayList; public class KFC { ArrayList<String> alist; } ", "java.lang.String", 0, 1);
+	}
+
+	/**
+	 * Testing a class with type parameters. Looking for reference to java.lang.String
+	*/
+	@Test
+	public void testClassWithParameterizedTypes_Dec_0_Ref_1() {
+		configureParser("public class KFC<String> { } ", "java.lang.String", 0, 1);
 	}
 
 
