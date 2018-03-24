@@ -66,6 +66,7 @@ public class TypeFinder {
 	
     private static List<String> java_files_as_string = new ArrayList<String>(); // initialize it
 
+	private static boolean debug = true;
 
 	/**
 	 *
@@ -145,7 +146,11 @@ public class TypeFinder {
 			TypeVisitor visitor = new TypeVisitor();
 			cu.accept(visitor);
 		}
-		TypeVisitor.printTypes();
+
+		if (debug){
+			TypeVisitor.printTypes();
+
+		}
 
 	}
 		
