@@ -60,13 +60,8 @@ public class TypeVisitorBuiltInTest {
 		int ref_count = 0;
 		try {
 			decl_count = visitor.getDecCount().get(type);
-		} catch (Exception e) {
-
-		}
-		try {
 			ref_count = visitor.getRefCount().get(type);
 		} catch (Exception e) {
-
 		}
 
 		assertEquals(expectedDeclarationCount, decl_count);
