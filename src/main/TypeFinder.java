@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
  * directory.
  *
  * @author Sze Lok Irene Chan
- * @author Evan Quan
+ * @author Josh Schijns
  * @since 13 March 2018
  *
  */
@@ -31,14 +31,10 @@ public class TypeFinder {
 	public static final int DIRECTORY_PATH = 0;
 
 	/**
-	 * Command line argument index for Java type of interest
-	 */
-	public static final int JAVA_TYPE = 1;
-	/**
 	 * The number of command line arguments the user needs to input in order for the
 	 * program to properly work.
 	 */
-	public static final int VALID_ARGUMENT_COUNT = 2;
+	public static final int VALID_ARGUMENT_COUNT = 1;
 	/**
 	 * Error message when the user inputs a directory that TypeFinder cannot
 	 * recognize. This may be because the directory does not exist, or is not
@@ -54,7 +50,7 @@ public class TypeFinder {
 	/**
 	 * Prompts the user on how to use the program properly.
 	 */
-	public static final String USAGE_MESSAGE = "Usage: java TypeFinder <directory> <Java type>";
+	public static final String USAGE_MESSAGE = "Usage: java TypeFinder <directory>";
 	/**
 	 * TODO This is currently unused.
 	 */
@@ -67,11 +63,6 @@ public class TypeFinder {
 	public static final String INVALID_ARGUMENT_ERROR_MESSAGE = "Error: Invalid number of arguments.\n" + USAGE_MESSAGE;
 
 	private static String directory;
-
-	private static String java_type;
-	private static int decl_count = 0;
-	private static int ref_count = 0;
-	private static List<String> java_files_as_string = new ArrayList<String>(); // initialize it
 
 	/**
 	 *
@@ -113,7 +104,6 @@ public class TypeFinder {
 		}
 
 		directory = args[DIRECTORY_PATH];
-		java_type = args[JAVA_TYPE];
 
 		try {
 			// retrieve all java files (read to string) in directory, and store in ArrayList
@@ -133,8 +123,6 @@ public class TypeFinder {
 	 *
 	 * @param args
 	 *            command line arguments args[0] path of directory of interest
-	 *            args[1] fully qualified name of Java type to search for
-	 *            declarations and references
 	 */
 	public static void main(String[] args) {
 		/* Initialization process */
@@ -153,18 +141,9 @@ public class TypeFinder {
 
 			TypeVisitor visitor = new TypeVisitor();
 			cu.accept(visitor);
-
-			List<String> types = visitor.getList();
-			Map<String, Integer> decCounter = visitor.getDecCount();
-			Map<String, Integer> refCounter = visitor.getRefCount();
-
-			// increment the total counter
-			if (types.contains(java_type)) {
-				decl_count += decCounter.get(java_type);
-				ref_count += refCounter.get(java_type);
 			}
 		}
 		
-		System.out.println(java_type + ". Declarations found: " + decl_count + "; references found: " + ref_count + ".");
+		TypeVisitor.printTypes();
 	}
 }
