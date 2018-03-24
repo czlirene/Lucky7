@@ -1,12 +1,10 @@
 package bar; 
 
 class Other { 
-	public Bar method() {
-		Bar foo = new Foo(); 
-		return foo; 
+	public void add() {
+		1 + 1;
 	}
-	
-	public Bar method() {
-		return new Bar();
+	public void add2() {
+		add();
 	}
 }

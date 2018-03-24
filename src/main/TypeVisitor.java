@@ -24,11 +24,11 @@ import org.eclipse.jdt.core.dom.*;
 public class TypeVisitor extends ASTVisitor {
 
 	// Global variables
-	private static ArrayList<String> types = new ArrayList<String>();
+	private static ArrayList<String> types;
 
-	private static HashMap<String, Integer> decCounter = new HashMap<String, Integer>();
+	private static HashMap<String, Integer> decCounter;
 
-	private static HashMap<String, Integer> refCounter = new HashMap<String, Integer>();
+	private static HashMap<String, Integer> refCounter;
 
 	/**
 	 * Checks if the passed type already exists within the types list. [false -> add
@@ -40,7 +40,6 @@ public class TypeVisitor extends ASTVisitor {
 	 */
 	private static void addTypeToList(String type) {
 		if (!types.contains(type)) {
-			
 			types.add(type);
 			decCounter.put(type, 0);
 			refCounter.put(type, 0);
@@ -72,20 +71,6 @@ public class TypeVisitor extends ASTVisitor {
 			refCounter.put(type, refCounter.get(type) + 1);
 		}
 	}
-	
-	public static void printTypes() {
-		for (String type : types) {
-			int refCount = refCounter.get(type);
-			int decCount = decCounter.get(type);
-			System.out.println(type + ". Declarations found: " + decCount + "; references found: " + refCount + ".");
-		}
-	}
-	
-	public static void resetCounters() {
-		types.clear();
-		decCounter.clear();
-		refCounter.clear();
-	}
 
 	/*
 	 * ============================== HELPER FUNCTIONS ==============================
@@ -97,13 +82,9 @@ public class TypeVisitor extends ASTVisitor {
 	 */
 	public TypeVisitor() {
 		// initialize list and counters to null
-		
-		// EDIT: Took out the initializers since the variables are static
-		// that way we can access all the values at the end. Initialized them at the beginning of the program
-		
-		//types = new ArrayList<String>();
-		//decCounter = new HashMap<String, Integer>();
-		//refCounter = new HashMap<String, Integer>();
+		types = new ArrayList<String>();
+		decCounter = new HashMap<String, Integer>();
+		refCounter = new HashMap<String, Integer>();
 	}
 
 	/**
@@ -266,7 +247,7 @@ public class TypeVisitor extends ASTVisitor {
 				bindtype = binding.getKind();
 			}
 			
-			System.out.println(type1 + "'s bindtype: " + bindtype);
+			//System.out.println(type1 + "'s bindtype: " + bindtype);
 			
 			if (bindtype == 2) {
 				ITypeBinding typeBind = node.resolveTypeBinding();
@@ -315,14 +296,19 @@ public class TypeVisitor extends ASTVisitor {
 				}
 			}
 
-			// if the bindtype is 4, add the reference counter ONLY IF the node name 
-			// is the same as the identifier of the name after resolving binding.
+			// if the bindtype is 4, add the reference counter ONLY IF
+			// the parent node is MethodDeclaration and only if the MethodDeclaration node
+			// is a constructor
 			else if (bindtype == 4) {
-				String name = binding.getName();
+				ASTNode parent = node.getParent();
 				
-				if (name.equals(type1)) {
-					addTypeToList(type1);
-					incRefCount(type1);
+				if (parent.getClass().getName().contains("MethodDeclaration")) {
+					MethodDeclaration mNode = (MethodDeclaration) parent;
+					
+					if (mNode.isConstructor()) {
+						addTypeToList(type1);
+						incRefCount(type1);
+					}
 				}
 			}
 		}
@@ -361,6 +347,7 @@ public class TypeVisitor extends ASTVisitor {
 			addTypeToList(type);
 			incRefCount(type);
 		}
+		
 		return true;
 	}
 	
