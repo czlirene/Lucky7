@@ -15,6 +15,7 @@ import main.*;
 
 import org.junit.Test;
 import org.junit.Before;
+import org.junit.After;
 
 public class testCounting {
 	
@@ -103,6 +104,11 @@ public class testCounting {
 		}
 		
 		return;
+	}
+	
+	@After
+	public void after() {
+		TypeVisitor.resetCounters();
 	}
 	
 	@Test
