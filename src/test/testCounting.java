@@ -132,12 +132,10 @@ public class testCounting {
 		String source = "package test.testPackage; import java.util.HashMap; class Foo { HashMap map;}";
 		
 		Map<String, Integer> decExpected = new HashMap<String, Integer>();
-		decExpected.put("test.testPackage", 0);
 		decExpected.put("test.testPackage.Foo", 1);
 		decExpected.put("java.util.HashMap", 0);
 		
 		Map<String, Integer> refExpected = new HashMap<String, Integer>();
-		refExpected.put("test.testPackage", 1);
 		refExpected.put("test.testPackage.Foo", 0);
 		refExpected.put("java.util.HashMap", 2);
 		
@@ -203,14 +201,12 @@ public class testCounting {
 				+ " String[] a = new String[1];}}";
 
 		Map<String, Integer> decExpected = new HashMap<String, Integer>();
-		decExpected.put("test", 0);
 		decExpected.put("java.lang.String", 0);
 		decExpected.put("test.Cow", 1);
 		decExpected.put("java.lang.String[]", 0);
 		decExpected.put("int", 0);
 
 		Map<String, Integer> refExpected = new HashMap<String, Integer>();
-		refExpected.put("test", 1);
 		refExpected.put("java.lang.String", 6);
 		refExpected.put("test.Cow", 3);
 		refExpected.put("java.lang.String[]", 3);
@@ -244,13 +240,11 @@ public class testCounting {
 		
 		Map<String, Integer> decExpected = new HashMap<String, Integer>();
 		decExpected.put("bar.Other", 1);
-		decExpected.put("bar", 0);
 		decExpected.put("Bar", 0);
 		decExpected.put("Foo", 0);
 		
 		Map<String, Integer> refExpected = new HashMap<String, Integer>();
 		refExpected.put("bar.Other", 0);
-		refExpected.put("bar", 1);
 		refExpected.put("Bar", 1);
 		refExpected.put("Foo", 1);
 		
@@ -275,13 +269,11 @@ public class testCounting {
 		String source = "package bar; class Other { public Bar method() {Bar foo = new Foo(); return foo; }}";
 		
 		Map<String, Integer> decExpected = new HashMap<String, Integer>();
-		decExpected.put("bar", 0);
 		decExpected.put("bar.Other", 1);
 		decExpected.put("Bar", 0);
 		decExpected.put("Foo", 0);
 		
 		Map<String, Integer> refExpected = new HashMap<String, Integer>();
-		refExpected.put("bar", 1);
 		refExpected.put("bar.Other", 0);
 		refExpected.put("Bar", 2);
 		refExpected.put("Foo", 1);
@@ -294,13 +286,11 @@ public class testCounting {
 		String source = "package bar; class Other {Bar bar = new Foo();}";
 		
 		Map<String, Integer> decExpected = new HashMap<String, Integer>();
-		decExpected.put("bar", 0);
 		decExpected.put("bar.Other", 1);
 		decExpected.put("Bar", 0);
 		decExpected.put("Foo", 0);
 		
 		Map<String, Integer> refExpected = new HashMap<String, Integer>();
-		refExpected.put("bar", 1);
 		refExpected.put("bar.Other", 0);
 		refExpected.put("Bar", 1);
 		refExpected.put("Foo", 1);

@@ -393,28 +393,4 @@ public class TypeVisitor extends ASTVisitor {
 		incRefCount(type);
 		return true;
 	}
-	
-	/**
-	 * Visits a PackageDeclaration node type
-	 * PackageDeclaration:
-	 *     package Name;
-	 *     
-	 * Get the name of the package, add it to types, and increment the reference
-	 * counter associated to the type.
-	 * 
-	 * CounterType: REFERENCE
-	 * 
-	 * @param node
-	 *            : PackageDeclaration
-	 * @return boolean : True to visit the children of this node
-	 */
-	@Override
-	public boolean visit(PackageDeclaration node) {
-		Name packageName = node.getName();
-		String packageNameInString = packageName.getFullyQualifiedName();
-		
-		addTypeToList(packageNameInString);
-		incRefCount(packageNameInString);
-		return true;
-	}
 }
