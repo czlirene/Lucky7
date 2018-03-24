@@ -41,8 +41,8 @@ public class TypeVisitorBuiltInTest {
 		String[] srcPath = { TestSuite.SOURCE_DIR };
 		String[] classPath = { TestSuite.BIN_DIR };
 		parser.setEnvironment(classPath, srcPath, null, true);
-		// TODO: Fix up the name to be something other than name?
-		parser.setUnitName("Name");
+		// parser.setEnvironment(null, null, null, true);
+		parser.setUnitName("BuiltInTest");
 
 		// ensures nodes are being parsed properly
 		Map<String, String> options = JavaCore.getOptions();
@@ -68,17 +68,34 @@ public class TypeVisitorBuiltInTest {
 		} catch (Exception e) {
 
 		}
-		
-		Map<String, Integer> refmap = visitor.getRefCount();
-		Map<String, Integer> decmap = visitor.getDecCount();
-		
-		System.out.println("declaration count: " + decmap);
-		System.out.println("reference count: " + refmap);
-		System.out.println();
 
 		assertEquals(expectedDeclarationCount, decl_count);
 		assertEquals(expectedReferenceCount, ref_count);
 
+}
+
+	/**
+	 * Testing a String, looking for no reference to String
+	 */
+	@Test
+	public void testString_Dec_0_Ref_0() {
+		configureParser("public class KFC {String someStr;} ", "String", 0, 0);
+	}
+
+	/**
+	 * Testing an double, looking for reference to double
+	 */
+	@Test
+	public void testPrimitiveDouble_Dec_0_Ref_1() {
+		configureParser("public class KFC {double primInt;} ", "double", 0, 1);
+	}
+
+	/**
+	 * Testing a wrapper class Integer, looking for reference to java.lang.Integer
+	 */
+	@Test
+	public void testWrapperClassInteger_Dec_0_Ref_1() {
+		configureParser("public class KFC {Integer someInt;} ", "java.lang.Integer", 0, 1);
 	}
 
 	/**

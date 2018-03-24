@@ -80,7 +80,7 @@ public class TypeFinder {
 
 		// Given source is char[], these are required to resolve binding
 		parser.setEnvironment(null, null, null, true);
-		parser.setUnitName("SENG300GrpIt1");
+		parser.setUnitName("SENG300GrpIt2");
 
 		// ensures nodes are being parsed properly
 		Map<String, String> options = JavaCore.getOptions();
@@ -146,13 +146,6 @@ public class TypeFinder {
 			TypeVisitor visitor = new TypeVisitor();
 			cu.accept(visitor);
 		}
-
-		if (debug){
-			TypeVisitor.printTypes();
-
-		}
-
-	}
-		
+	}	
 }
 

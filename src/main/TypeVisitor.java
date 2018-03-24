@@ -30,6 +30,8 @@ public class TypeVisitor extends ASTVisitor {
 
 	private static HashMap<String, Integer> refCounter = new HashMap<String, Integer>();
 
+	private static boolean debug = false;
+
 	/**
 	 * Checks if the passed type already exists within the types list. [false -> add
 	 * type to list create entry <type, 0> in decCounter create entry <type, 0> in
@@ -71,20 +73,6 @@ public class TypeVisitor extends ASTVisitor {
 		if (refCounter.containsKey(type)) {
 			refCounter.put(type, refCounter.get(type) + 1);
 		}
-	}
-	
-	public static void printTypes() {
-		for (String type : types) {
-			int refCount = refCounter.get(type);
-			int decCount = decCounter.get(type);
-			System.out.println(type + ". Declarations found: " + decCount + "; references found: " + refCount + ".");
-		}
-	}
-	
-	public static void resetCounters() {
-		types.clear();
-		decCounter.clear();
-		refCounter.clear();
 	}
 
 	/*
@@ -266,7 +254,8 @@ public class TypeVisitor extends ASTVisitor {
 				bindtype = binding.getKind();
 			}
 			
-			System.out.println(type1 + "'s bindtype: " + bindtype);
+			if (debug)
+				System.out.println(type1 + "'s bindtype: " + bindtype);
 			
 			if (bindtype == 2) {
 				ITypeBinding typeBind = node.resolveTypeBinding();
