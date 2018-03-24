@@ -331,6 +331,12 @@ public class TypeVisitor extends ASTVisitor {
 				}
 			}
 		}
+		
+		
+		else if(node.getParent().getNodeType() == ASTNode.TYPE_PARAMETER){
+			System.out.println("Type Parameter: " + node.getFullyQualifiedName());
+			
+		}
 
 		return true;
 	}
