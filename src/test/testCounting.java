@@ -15,6 +15,7 @@ import main.*;
 
 import org.junit.Test;
 import org.junit.Before;
+import org.junit.After;
 
 public class testCounting {
 	
@@ -120,6 +121,12 @@ public class testCounting {
 		configureParser(source, decExpected, refExpected, 1);
 
 	}
+	
+	@After
+	public void after(){
+		TypeVisitor.resetCounters();
+	}
+	
 	// TODO
 	@Test
 	public void test2() {
