@@ -146,6 +146,10 @@ public class TypeFinder {
 			TypeVisitor visitor = new TypeVisitor();
 			cu.accept(visitor);
 		}
+		// This will print all the types out with corresponding decclarations and references
+		// in the format that has to be printed to console.
+		// Not a debug message :)
+		TypeVisitor.printTypes();
 	}	
 }
 

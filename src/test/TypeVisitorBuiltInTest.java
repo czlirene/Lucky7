@@ -10,6 +10,7 @@ import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.After;
 
 import main.TypeVisitor;
 
@@ -74,7 +75,11 @@ public class TypeVisitorBuiltInTest {
 		assertEquals(expectedReferenceCount, ref_count);
 
 }
-
+	@After
+	public void after(){
+		TypeVisitor.resetCounters();
+	}
+	
 	/**
 	 * Testing a String, looking for no reference to String
 	 */
