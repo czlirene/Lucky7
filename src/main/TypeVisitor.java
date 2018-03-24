@@ -40,6 +40,7 @@ public class TypeVisitor extends ASTVisitor {
 	 */
 	private static void addTypeToList(String type) {
 		if (!types.contains(type)) {
+			
 			types.add(type);
 			decCounter.put(type, 0);
 			refCounter.put(type, 0);
@@ -346,8 +347,10 @@ public class TypeVisitor extends ASTVisitor {
 		ITypeBinding typeBind = node.resolveBinding();
 		String type = typeBind.getQualifiedName();
 		
-		addTypeToList(type);
-		incRefCount(type);
+		if (node.getPrimitiveTypeCode().toString() != "void") {
+			addTypeToList(type);
+			incRefCount(type);
+		}
 		return true;
 	}
 	

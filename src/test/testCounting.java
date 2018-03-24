@@ -88,8 +88,8 @@ public class testCounting {
 				fail( "\""+expectedRefType +"\" type reference is not counted");	
 		}
 		
-		refmap.remove("void");
-		decmap.remove("void");
+		//refmap.remove("void");
+		//decmap.remove("void");
 		
 		// This checks if there are any types that were counted that are not expected
 		for (Map.Entry<String, Integer> entry : refmap.entrySet()) {
