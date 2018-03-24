@@ -63,6 +63,9 @@ public class TypeFinder {
 	public static final String INVALID_ARGUMENT_ERROR_MESSAGE = "Error: Invalid number of arguments.\n" + USAGE_MESSAGE;
 
 	private static String directory;
+	
+    private static List<String> java_files_as_string = new ArrayList<String>(); // initialize it
+
 
 	/**
 	 *
@@ -141,9 +144,10 @@ public class TypeFinder {
 
 			TypeVisitor visitor = new TypeVisitor();
 			cu.accept(visitor);
-			}
 		}
-		
 		TypeVisitor.printTypes();
+
 	}
+		
 }
+
