@@ -14,14 +14,9 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import main.*;
 
 import org.junit.Test;
-import org.junit.Before;
 import org.junit.After;
 
 public class testCounting {
-	
-	private ASTParser parser;
-	
-	// Maybe rename this ???
 	
 	/**
 	 * Counts actual declarations and references and compares them
