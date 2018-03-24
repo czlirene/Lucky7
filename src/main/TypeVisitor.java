@@ -80,6 +80,12 @@ public class TypeVisitor extends ASTVisitor {
 			System.out.println(type + ". Declarations found: " + decCount + "; references found: " + refCount + ".");
 		}
 	}
+	
+	public static void resetCounters() {
+		types.clear();
+		decCounter.clear();
+		refCounter.clear();
+	}
 
 	/*
 	 * ============================== HELPER FUNCTIONS ==============================
