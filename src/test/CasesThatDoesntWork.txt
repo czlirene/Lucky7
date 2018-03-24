@@ -6,3 +6,7 @@ class Other {
         return foo;
     }
 }
+
+// test3 counts the "add" method 
+
+// test4 counts the "yell" method

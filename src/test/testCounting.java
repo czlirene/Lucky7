@@ -87,6 +87,21 @@ public class testCounting {
 			else 
 				fail( "\""+expectedRefType +"\" type reference is not counted");	
 		}
+		
+		refmap.remove("void");
+		decmap.remove("void");
+		
+		// This checks if there are any types that were counted that are not expected
+		for (Map.Entry<String, Integer> entry : refmap.entrySet()) {
+			String type = entry.getKey();
+			int count = entry.getValue();
+			
+			if (!refMapExpected.containsKey(type)) {
+				System.out.println(type);;
+				fail("unexpected type: " + type);
+			}
+		}
+		
 		return;
 	}
 	
