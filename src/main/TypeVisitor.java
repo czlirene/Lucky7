@@ -24,11 +24,11 @@ import org.eclipse.jdt.core.dom.*;
 public class TypeVisitor extends ASTVisitor {
 
 	// Global variables
-	private static ArrayList<String> types;
+	private static ArrayList<String> types = new ArrayList<String>();
 
-	private static HashMap<String, Integer> decCounter;
+	private static HashMap<String, Integer> decCounter = new HashMap<String, Integer>();
 
-	private static HashMap<String, Integer> refCounter;
+	private static HashMap<String, Integer> refCounter = new HashMap<String, Integer>();
 
 	/**
 	 * Checks if the passed type already exists within the types list. [false -> add
@@ -71,6 +71,20 @@ public class TypeVisitor extends ASTVisitor {
 			refCounter.put(type, refCounter.get(type) + 1);
 		}
 	}
+	
+	public static void resetCounters(){
+		types.clear();
+		decCounter.clear();
+		refCounter.clear();
+	}
+	
+	public static void printTypes() {
+		for (String type : types) {
+			int refCount = refCounter.get(type);
+			int decCount = decCounter.get(type);
+			System.out.println(type + ". Declarations found: " + decCount + "; references found: " + refCount + ".");
+		}
+	}
 
 	/*
 	 * ============================== HELPER FUNCTIONS ==============================
@@ -82,9 +96,11 @@ public class TypeVisitor extends ASTVisitor {
 	 */
 	public TypeVisitor() {
 		// initialize list and counters to null
-		types = new ArrayList<String>();
-		decCounter = new HashMap<String, Integer>();
-		refCounter = new HashMap<String, Integer>();
+		// EDIT: Took out the initializers since the variables are static
+		// that way we can access all the values at the end. Initialized them at the beginning of the program
+// 		types = new ArrayList<String>();
+// 		decCounter = new HashMap<String, Integer>();
+// 		refCounter = new HashMap<String, Integer>();
 	}
 
 	/**
