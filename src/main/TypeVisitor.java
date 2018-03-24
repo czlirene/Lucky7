@@ -71,6 +71,14 @@ public class TypeVisitor extends ASTVisitor {
 			refCounter.put(type, refCounter.get(type) + 1);
 		}
 	}
+	
+	public static void printTypes() {
+		for (String type : types) {
+			int refCount = refCounter.get(type);
+			int decCount = decCounter.get(type);
+			System.out.println(type + ". Declarations found: " + decCount + "; references found: " + refCount + ".");
+		}
+	}
 
 	/*
 	 * ============================== HELPER FUNCTIONS ==============================
