@@ -16,7 +16,7 @@ import test.NestedFooTests.Foobar.Bar;
 // dec count = 1
 // ref count = 1
 
-class Foo{
+public class Foo{
     
     @interface FUBAR{
     }

@@ -9,11 +9,11 @@ package test.NestedFooTests;
 // Foo
 // dec count: 1
 
-class Foo1 {
+public class Foo1 {
     Foo f; 
 
     public void test(){
-        class Foo{} // local class, only use simple name Foo
+        // class Foo{} // local class, only use simple name Foo
     }
 
     public Foo hello(){

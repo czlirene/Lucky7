@@ -7,7 +7,7 @@ package test.NestedFooTests.Foobar;
 // test.NestedFooTests.Foobar.Boo
 // dec count = 1
 // ref count = 1
-class Boo {
+public class Boo {
     public Boo(Foo fu){
     }
 }

@@ -9,7 +9,7 @@ import test.NestedFooTests.Foobar.Bar;
 // test.NestedFooTests.Foobar.Bar
 // ref count: 2
 
-class Foo {
+public class Foo {
     public Foo(){
         // default constructor
     }

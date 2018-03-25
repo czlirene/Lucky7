@@ -74,7 +74,7 @@ public class TypeVisitor extends ASTVisitor {
 		}
 	}
 	
-	public static void resetCounters(){
+	public void resetCounters(){
 		types.clear();
 		decCounter.clear();
 		refCounter.clear();
@@ -93,17 +93,9 @@ public class TypeVisitor extends ASTVisitor {
 	 */
 
 	/**
-	 * constructor Intialize the list of types, and the HashMaps for the counters to
-	 * null.
+	 * constructor, removed implementation
 	 */
-	public TypeVisitor() {
-		// initialize list and counters to null
-		// EDIT: Took out the initializers since the variables are static
-		// that way we can access all the values at the end. Initialized them at the beginning of the program
-		// types = new ArrayList<String>();
-		// decCounter = new HashMap<String, Integer>();
-		// refCounter = new HashMap<String, Integer>();
-	}
+	public TypeVisitor() {}
 
 	/**
 	 * Accessor method. Fetches the map of declaration counter.

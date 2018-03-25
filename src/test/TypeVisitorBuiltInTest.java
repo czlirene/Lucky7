@@ -24,9 +24,11 @@ import main.TypeVisitor;
  */
 public class TypeVisitorBuiltInTest {
 
+	private static TypeVisitor visitor ;
+
 	@After
 	public void after(){
-		TypeVisitor.resetCounters();
+		visitor.resetCounters();
 	}
 	
 	/**
@@ -60,7 +62,7 @@ public class TypeVisitorBuiltInTest {
 
 		final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 
-		TypeVisitor visitor = new TypeVisitor();
+		visitor = new TypeVisitor();
 		cu.accept(visitor);
 
 		int decl_count = 0;
