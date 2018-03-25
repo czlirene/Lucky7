@@ -9,6 +9,5 @@ package test.NestedFooTests.Foobar;
 // ref count = 1
 class Boo {
     public Boo(Foo fu){
-
     }
 }

@@ -3,7 +3,6 @@ package test.NestedFooTests.Foobar;
 import test.NestedFooTests.Foobar.Foo.FUBAR;
 
 // test.NestedFooTests.Foobar.Foo
-// Dec count = 0
 // Ref count = 3
 
 // test.NestedFooTests.Foobar.Bar
@@ -11,7 +10,6 @@ import test.NestedFooTests.Foobar.Foo.FUBAR;
 // ref count = 1
 
 // test.NestedFooTests.Foobar.Boo
-// Dec count = 0
 // ref count = 1
 
 // test.NestedFooTests.Foobar.Foo.FUBAR

@@ -128,17 +128,12 @@ public class TypeFinder {
 	 */
 	public static void main(String[] args) {
 		/* Initialization process */
-		// boolean initSuccessful = initFinder(args);
+		boolean initSuccessful = initFinder(args);
 
-		// if (!initSuccessful) {
-		// 	return;
-		// }
-		try {
-			java_files_as_string = JavaJarFileReader.getAllFilesToString(TestSuite.NESTED_FOO_FILES_TEST_DIR);
-		} catch (Exception e){
-			e.printStackTrace();
+		if (!initSuccessful) {
+			return;
 		}
-		
+
 		/* Create AST */
 		TypeVisitor visitor = new TypeVisitor();
 

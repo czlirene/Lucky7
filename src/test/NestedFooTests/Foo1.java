@@ -6,6 +6,9 @@ package test.NestedFooTests;
 // test.NestedFooTests.Foo
 // ref count: 3
 
+// Foo
+// dec count: 1
+
 class Foo1 {
     Foo f; 
 

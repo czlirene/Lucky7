@@ -33,7 +33,7 @@ public class TypeVisitorNestedFooTests {
 	 * @param type
 	 * @param expectedOutputString
 	 */
-	private static void configureParser(String dir, String type, String expectedOutputString) {
+	private static void configureParser(String dir, String type, int expectedReferenceCount, int expectedDeclarationCount) {
 		try {
 			source = JavaJarFileReader.getAllFilesToString(dir);
 		} catch (Exception e) {
@@ -48,7 +48,7 @@ public class TypeVisitorNestedFooTests {
 		String[] classPath = { TestSuite.BIN_DIR };
 		parser.setEnvironment(classPath, srcPath, null, true);
 		// parser.setEnvironment(null, null, null, true);
-		parser.setUnitName("NestedTest");
+		parser.setUnitName("NestedFooTest");
 		
 		// ensures nodes are being parsed properly
 		Map<String, String> options = JavaCore.getOptions();
@@ -65,23 +65,71 @@ public class TypeVisitorNestedFooTests {
 			cu.accept(visitor);
 		}
 
-		Map<String, Integer> decCounter = visitor.getDecCount();
-		Map<String, Integer> refCounter = visitor.getRefCount();
-		ArrayList<String> types = visitor.getList();
-
-		for (String t : types){
-			System.out.println(t + ". Declarations found: " + decCounter.get(t) + "; references found: " + refCounter.get(t) + ".");
+		int decl_count = 0;
+		int ref_count = 0;
+		try {
+			decl_count = visitor.getDecCount().get(type);
+			ref_count = visitor.getRefCount().get(type);
+		} catch (Exception e) {
 		}
 
-        // assertEquals(expectedReferenceCount, ref_count);
+		assertEquals(expectedDeclarationCount, decl_count);
+		assertEquals(expectedReferenceCount, ref_count);
     }
 
 	/**
-	 * Testing full count of test.NestedFooTests.Foo from all the files
-	 * in the nested directory. 
+	 * Testing test.NestedFooTests.Foo in all the files in the nested directory.
 	*/
 	@Test
-	public void testTotalCountForNestedFooTestsFoo() {
-		configureParser(TestSuite.NESTED_FOO_FILES_TEST_DIR, "test.NestedFooTests.Foo", "");
+	public void testNestedFooTests_Foo_Dec_1_Ref_4() {
+		configureParser(TestSuite.NESTED_FOO_FILES_TEST_DIR, "test.NestedFooTests.Foo", 1, 4);
+	}
+
+	/**
+	 * Testing test.NestedFooTests.Foo1 in all the files in the nested directory.
+	*/
+	@Test
+	public void testNestedFooTests_Foo1_Dec_1_Ref_0() {
+		configureParser(TestSuite.NESTED_FOO_FILES_TEST_DIR, "test.NestedFooTests.Foo1", 1, 0);
+	}
+
+	/**
+	 * Testing test.NestedFooTests.Foo1 in all the files in the nested directory.
+	*/
+	@Test
+	public void testLocalClass_Foo_Dec_1_Ref_0() {
+		configureParser(TestSuite.NESTED_FOO_FILES_TEST_DIR, "Foo", 1, 0);
+	}
+
+	/**
+	 * Testing test.NestedFooTests.Foobar.Foo in all the files in the nested directory.
+	*/
+	@Test
+	public void testNestedFooTests_Foobar_Foo_Dec_1_Ref_4() {
+		configureParser(TestSuite.NESTED_FOO_FILES_TEST_DIR, "test.NestedFooTests.Foobar.Foo", 1, 4);
+	}
+
+	/**
+	 * Testing test.NestedFooTests.Foobar.Bar in all the files in the nested directory.
+	*/
+	@Test
+	public void testNestedFooTests_Foobar_Bar_Dec_1_Ref_4() {
+		configureParser(TestSuite.NESTED_FOO_FILES_TEST_DIR, "test.NestedFooTests.Foobar.Bar", 1, 4);
+	}
+
+	/**
+	 * Testing test.NestedFooTests.Foobar.Boo in all the files in the nested directory.
+	*/
+	@Test
+	public void testNestedFooTests_Foobar_Boo_Dec_1_Ref_3() {
+		configureParser(TestSuite.NESTED_FOO_FILES_TEST_DIR, "test.NestedFooTests.Foobar.Boo", 1, 3);
+	}
+
+	/**
+	 * Testing test.NestedFooTests.Foobar.Foo.FUBAR in all the files in the nested directory.
+	*/
+	@Test
+	public void testNestedFooTests_Foobar_Foo_FUBAR_Dec_1_Ref_3() {
+		configureParser(TestSuite.NESTED_FOO_FILES_TEST_DIR, "test.NestedFooTests.Foobar.Foo.FUBAR", 1, 3);
 	}
 }

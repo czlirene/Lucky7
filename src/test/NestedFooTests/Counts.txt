@@ -6,7 +6,7 @@ Foo
     Dec count: 1
     Ref count: 0
 
-test.NestedFooTests.Foobar.Foo1
+test.NestedFooTests.Foo1
     Dec count: 1
     Ref count: 0
 
@@ -16,7 +16,7 @@ test.NestedFooTests.Foobar.Foo
 
 test.NestedFooTests.Foobar.Bar
     Dec count: 1
-    Ref count: 5
+    Ref count: 4
 
 test.NestedFooTests.Foobar.Boo
     Dec count: 1
