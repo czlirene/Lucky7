@@ -35,6 +35,7 @@ public class TestSuite {
 	public static final String TYPE_FINDER_TEST_DIR = TEST_DIR.concat("typeFinderTestPackage/");
 	public static final String NESTED_JAVA_FILES_TEST_DIR = TEST_DIR.concat("NestedTestFiles/");
 	public static final String NESTED_FOO_FILES_TEST_DIR = TEST_DIR.concat("NestedFooTests/");
+	public static final String NESTED_PROPER_FILES_TEST_DIR = TEST_DIR.concat("NestedProperTests/");
 	/**
 	 * Line separator changes depending on operating system. JUnitTests dealing with
 	 * file contents should consider this.

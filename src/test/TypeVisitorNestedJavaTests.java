@@ -18,19 +18,18 @@ import main.JavaJarFileReader;
 
 /**
  * JUnit 4 Tests for {@link TypeVisitor} class. Checks type declaration and
- * reference counts for all the files found inside a single directory (NestedFooTests)
- *
+ * reference counts for all the files found inside a single directory (NestedJavaTests)
+
  * @author Sze Lok Irene Chan
  * @since 24 March, 2018
- *
  */
-public class TypeVisitorNestedFooTests {
-	private static TypeVisitor visitor;
+public class TypeVisitorNestedJavaTests{
+    private static TypeVisitor visitor;
 
 	@Before
 	public void init(){
 		try {
-			List<String> source = JavaJarFileReader.getAllFilesToString(TestSuite.NESTED_FOO_FILES_TEST_DIR);
+			List<String> source = JavaJarFileReader.getAllFilesToString(TestSuite.NESTED_PROPER_FILES_TEST_DIR);
 			for (String file : source){
 				configureParser(file);
 			}
@@ -58,7 +57,7 @@ public class TypeVisitorNestedFooTests {
 		parser.setBindingsRecovery(true);
 		// these are needed for binding to be resolved due to SOURCE is a char[]
 		parser.setEnvironment(null, null, null, true);
-		parser.setUnitName("NestedFooTest");
+		parser.setUnitName("NestedJavaTest");
 
 		// ensures nodes are being parsed properly
 		Map<String, String> options = JavaCore.getOptions();
@@ -85,69 +84,24 @@ public class TypeVisitorNestedFooTests {
 	
 		assertEquals(expectedDeclarationCount, decl_count);
 		assertEquals(expectedReferenceCount, ref_count);
-	}
+    }
+    
 
-	/**
+    /**
 	 * Testing to see all the files are read from the directory
 	*/
 	@Test
 	public void testCorrectFileCountForNestedFooTests() throws Exception{
-		int result = JavaJarFileReader.getAllFilesToString(TestSuite.NESTED_FOO_FILES_TEST_DIR).size();
+		int result = JavaJarFileReader.getAllFilesToString(TestSuite.NESTED_PROPER_FILES_TEST_DIR).size();
 		assertEquals(5, result);
-	}
+    }
+    
 	/**
-	 * Testing test.NestedFooTests.Foo in all the files in the nested directory.
+	 * Testing java.lang.String in all the files in the nested directory.
 	*/
 	@Test
-	public void testNestedFooTests_Foo_Dec_1_Ref_4() throws IOException {
-		validateCount("test.NestedFooTests.Foo", 1, 4);
+	public void testString_Dec_0_Ref_0() throws IOException {
+		validateCount("java.lang.String", 0, 0);
 	}
 
-	/**
-	 * Testing test.NestedFooTests.Foo1 in all the files in the nested directory.
-	*/
-	@Test
-	public void testNestedFooTests_Foo1_Dec_1_Ref_0() {
-		validateCount("test.NestedFooTests.Foo1", 1, 0);
-	}
-
-	/**
-	 * Testing test.NestedFooTests.Foo1 in all the files in the nested directory.
-	*/
-	@Test
-	public void testLocalClass_Foo_Dec_1_Ref_0() {
-		validateCount("Foo", 1, 0);
-	}
-
-	/**
-	 * Testing test.NestedFooTests.Foobar.Foo in all the files in the nested directory.
-	*/
-	@Test
-	public void testNestedFooTests_Foobar_Foo_Dec_1_Ref_4() {
-		validateCount("test.NestedFooTests.Foobar.Foo", 1, 4);
-	}
-
-	/**
-	 * Testing test.NestedFooTests.Foobar.Bar in all the files in the nested directory.
-	*/
-	@Test
-	public void testNestedFooTests_Foobar_Bar_Dec_1_Ref_4() {
-		validateCount("test.NestedFooTests.Foobar.Bar", 1, 4);
-	}
-
-	/**
-	 * Testing test.NestedFooTests.Foobar.Boo in all the files in the nested directory.
-	*/
-	@Test
-	public void testNestedFooTests_Foobar_Boo_Dec_1_Ref_3() {
-		validateCount("test.NestedFooTests.Foobar.Boo", 1, 3);
-	}
-
-	/**
-	 * Testing test.NestedFooTests.Foobar.Foo.FUBAR in all the files in the nested directory.
-	*/
-	@Test
-	public void testNestedFooTests_Foobar_Foo_FUBAR_Dec_1_Ref_3() {
-		validateCount("test.NestedFooTests.Foobar.Foo.FUBAR", 1, 3);
-	}
 }

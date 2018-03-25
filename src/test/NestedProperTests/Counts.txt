@@ -1,0 +1,43 @@
+test.NestedFooTests.Foo
+    Dec count: 1
+    Ref count: 0
+
+java.lang.String
+    Dec count: 0
+    Ref count: 4+1+
+
+java.util.List
+    Dec count: 0
+    Ref count: 2 +
+
+java.util.ArrayList
+    Dec count: 0
+    Ref count: 4 +
+
+test.NestedProperTests.Foo1
+    Dec count: 1
+    Ref count: 0
+
+java.lang.String[]
+    Dec count: 0
+    Ref count: 1+
+
+int
+    Dec count: 0
+    Ref count: 1+
+
+java.lang.Integer
+    Dec count: 0
+    Ref count: 1+
+
+java.lang.Integer[]
+    Dec count: 0
+    Ref count: 1+
+
+java.util.HashMap
+    Dec count: 0
+    Ref count: 2+
+
+java.lang.Object
+    Dec count: 0
+    Ref count: 2+
