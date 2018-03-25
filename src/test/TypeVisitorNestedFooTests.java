@@ -33,7 +33,8 @@ public class TypeVisitorNestedFooTests {
 	 * @param type
 	 * @param expectedOutputString
 	 */
-	private static void configureParser(String dir, String type, int expectedReferenceCount, int expectedDeclarationCount) {
+	private static void configureParser(String dir, String type, int expectedDeclarationCount, int expectedReferenceCount) {
+		
 		try {
 			source = JavaJarFileReader.getAllFilesToString(dir);
 		} catch (Exception e) {
