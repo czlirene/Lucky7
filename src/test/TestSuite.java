@@ -10,7 +10,7 @@ import org.junit.runners.Suite;
 /**
  * All Test suites go here.
  */
-@Suite.SuiteClasses({ TypeVisitorBuiltInTest.class, TypeFinderRecursiveTest.class, TypeVisitorNestedFooTests.class})
+@Suite.SuiteClasses({ TypeVisitorBuiltInTest.class, TypeFinderRecursiveTest.class, TypeVisitorNestedFooTests.class, TypeVisitorNestedJavaTests.class})
 
 /**
  * Runs all test classes

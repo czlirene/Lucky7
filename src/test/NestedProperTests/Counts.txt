@@ -1,43 +1,107 @@
 test.NestedFooTests.Foo
     Dec count: 1
-    Ref count: 0
-
-java.lang.String
-    Dec count: 0
-    Ref count: 4+1+
-
-java.util.List
-    Dec count: 0
-    Ref count: 2 +
-
-java.util.ArrayList
-    Dec count: 0
-    Ref count: 4 +
+    Ref count: 1
 
 test.NestedProperTests.Foo1
     Dec count: 1
     Ref count: 0
 
+test.NestedProperTests.Foobar.Foo 
+    Dec count: 1
+    Ref count: 2
+
+test.NestedProperTests.Foobar.Foo.FUBAR
+    Dec count: 1
+    Ref count: 0
+
+test.NestedProperTests.Foobar.Boo
+    Dec count: 1
+    Ref count: 3
+
+test.NestedProperTests.Foobar.Bar
+    Dec count: 1
+    Ref count: 5
+
+test.NestedProperTests.Foobar.Bar.Fish
+    Dec count: 1
+    Ref count: 3
+
+test.NestedProperTests.Foobar.Bar.LambdaMe
+    Dec count: 1
+    Ref count: 1
+
+localMe
+    Dec count: 1
+    Ref count: 0
+
+java.lang.String
+    Dec count: 0
+    Ref count: 6
+
 java.lang.String[]
     Dec count: 0
-    Ref count: 1+
-
-int
-    Dec count: 0
-    Ref count: 1+
+    Ref count: 2
 
 java.lang.Integer
     Dec count: 0
-    Ref count: 1+
+    Ref count: 1
+
+java.lang.Double
+    Dec count: 0
+    Ref count: 1
 
 java.lang.Integer[]
     Dec count: 0
-    Ref count: 1+
+    Ref count: 1
+
+java.lang.Thread
+    Dec count: 0
+    Ref count: 7
+
+java.lang.System
+    Dec count: 0
+    Ref count: 1
+
+java.lang.Deprecated
+    Dec count: 0
+    Ref count: 1
+
+java.lang.Override
+    Dec count: 0
+    Ref count: 1
+
+java.util.List
+    Dec count: 0
+    Ref count: 3
+
+java.util.ArrayList
+    Dec count: 0
+    Ref count: 6
+
+java.util.LinkedList
+    Dec count: 0
+    Ref count: 2
 
 java.util.HashMap
     Dec count: 0
-    Ref count: 2+
+    Ref count: 2
 
 java.lang.Object
     Dec count: 0
-    Ref count: 2+
+    Ref count: 2
+
+int
+    Dec count: 0
+    Ref count: 1
+
+double
+    Dec count: 0
+    Ref count: 2
+
+boolean
+    Dec count: 0
+    Ref count: 1
+
+float
+    Dec count: 0
+    Ref count: 5

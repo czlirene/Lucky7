@@ -121,7 +121,6 @@ public class TypeVisitor extends ASTVisitor {
 	/**
 	 * Clean up method. Allows caller to reset all list and Maps
 	 * in the current instance.
-	 * 
 	 */
 	public void resetCounters(){
 		types.clear();
