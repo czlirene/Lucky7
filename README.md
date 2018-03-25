@@ -4,7 +4,7 @@ Lucky7 - Iteration 2
 Team Members
 ----
 ABOU GHARIB, Patrick George
-- UCID: 
+- UCID: 10137116
 - pgabough@ucalgary.ca
 
 CHAN, Sze Lok Irene
@@ -30,7 +30,7 @@ Tasks
 	- Remember to check for `.java` file ending (DONE)
 	- Remember to check for `.jar` file ending (DONE)
 	- Recursively find all `.java` and `.jar` files (DONE)
-	- Extract `.jar` files (DONE: Used for Irene's debug, can be ignored)
+	- Extract `.jar` files (DONE)
 	- Dynamically read `.jar` files during execution (DONE, it's done right Patrick?yes )
 - Convert file contents to string
 	- Done 1 file at a time (DONE)
