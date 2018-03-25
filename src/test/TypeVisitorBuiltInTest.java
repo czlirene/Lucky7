@@ -229,14 +229,6 @@ public class TypeVisitorBuiltInTest {
 	}
 
 	/**
-	 * Testing a class with type parameters. Looking for reference to java.lang.String
-	*/
-	@Test
-	public void testClassWithParameterizedTypes_Dec_0_Ref_1() {
-		configureParser("public class KFC<String> { } ", "String", 0, 1);
-	}
-
-	/**
 	 * Check if initializing a variable of String within a for-loop counts as a
 	 * reference
 	 */
