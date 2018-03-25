@@ -31,7 +31,7 @@ Tasks
 	- Remember to check for `.jar` file ending (DONE)
 	- Recursively find all `.java` and `.jar` files (DONE)
 	- Extract `.jar` files (DONE: Used for Irene's debug, can be ignored)
-	- Dynamically read `.jar` files during execution (DONE, it's done right Patrick?)
+	- Dynamically read `.jar` files during execution (DONE, it's done right Patrick? yes, but if you run it twice on the same directory more than once it gives inflated values because of the not deleted temp files, other than that it correctly returns the list of contents)
 - Convert file contents to string
 	- Done 1 file at a time (DONE)
 	- Should probably save to an ArrayList<String> (DONE)
