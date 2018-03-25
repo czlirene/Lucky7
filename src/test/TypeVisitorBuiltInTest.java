@@ -72,6 +72,13 @@ public class TypeVisitorBuiltInTest {
 			ref_count = visitor.getRefCount().get(type);
 		} catch (Exception e) {
 		}
+		
+		Map<String, Integer> refmap = visitor.getRefCount();
+		Map<String, Integer> decmap = visitor.getDecCount();
+		
+		System.out.println("declaration count: " + decmap);
+		System.out.println("reference count: " + refmap);
+		System.out.println();
 
 		assertEquals(expectedDeclarationCount, decl_count);
 		assertEquals(expectedReferenceCount, ref_count);
@@ -227,7 +234,7 @@ public class TypeVisitorBuiltInTest {
 	*/
 	@Test
 	public void testClassWithParameterizedTypes_Dec_0_Ref_1() {
-		configureParser("public class KFC<String> { } ", "java.lang.String", 0, 1);
+		configureParser("public class KFC<String> { } ", "String", 0, 1);
 	}
 
 	/**
