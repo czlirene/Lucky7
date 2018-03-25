@@ -225,6 +225,8 @@ public class testCounting {
 		refExpected.put("Pair", 3);
 		refExpected.put("java.lang.String", 4);
 		refExpected.put("java.lang.Long", 3);
+		refExpected.put("X", 1);
+		refExpected.put("Y", 1);
 		
 		configureParser(source, decExpected, refExpected, 5);
 	}

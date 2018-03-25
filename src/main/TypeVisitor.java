@@ -74,7 +74,7 @@ public class TypeVisitor extends ASTVisitor {
 		}
 	}
 	
-	public void resetCounters(){
+	public static void resetCounters(){
 		types.clear();
 		decCounter.clear();
 		refCounter.clear();
@@ -190,11 +190,52 @@ public class TypeVisitor extends ASTVisitor {
 	 */
 	@Override
 	public boolean visit(TypeDeclaration node) {
+		// get the Identifier and add +1 to the declaration count
 		ITypeBinding typeBind = node.resolveBinding();
 		String type = typeBind.getQualifiedName();
 
 		addTypeToList(type);
 		incDecCount(type);
+		
+		// If there are TypeParameters, add +1 to the reference count
+		// for each TypeParameter
+		List typeParameters = node.typeParameters();
+		if (typeParameters != null) {
+			for (int i = 0; i < typeParameters.size(); i++) {
+				TypeParameter typeParameter = (TypeParameter) typeParameters.get(i);
+				ITypeBinding typeParameterBind = typeParameter.resolveBinding();
+				String typeParameterName = typeParameterBind.getQualifiedName();
+				
+				addTypeToList(typeParameterName);
+				incRefCount(typeParameterName);
+			}
+		}
+		
+		// If the interface is extending some Types, add +1 to the reference count
+		// for each super interfaces
+		List superinterfaces = node.superInterfaceTypes();
+		if (superinterfaces != null) {
+			for (int i = 0; i < superinterfaces.size(); i++) {
+				Type superinterfaceType = (Type) superinterfaces.get(i);
+				ITypeBinding superinterfaceBind = superinterfaceType.resolveBinding();
+				String superinterfaceName = superinterfaceBind.getQualifiedName();
+							
+				addTypeToList(superinterfaceName);
+				incRefCount(superinterfaceName);
+			}
+		}
+		
+		if (!node.isInterface()) {
+			// If the class/interface is extending some Type, add +1 to the reference count
+			Type superclass = node.getSuperclassType();
+			if (superclass != null) {
+				ITypeBinding superclassBind = superclass.resolveBinding();
+				String superclassName = superclassBind.getQualifiedName();
+							
+				addTypeToList(superclassName);
+				incRefCount(superclassName);
+			}
+		}
 
 		return true;
 	}
@@ -323,12 +364,6 @@ public class TypeVisitor extends ASTVisitor {
 				}
 			}
 		}
-		
-		
-		else if(node.getParent().getNodeType() == ASTNode.TYPE_PARAMETER){
-			System.out.println("Type Parameter: " + node.getFullyQualifiedName());
-			
-		}
 
 		return true;
 	}
@@ -389,6 +424,15 @@ public class TypeVisitor extends ASTVisitor {
 		
 		addTypeToList(type);
 		incRefCount(type);
+		return true;
+	}
+	
+	@Override
+	public boolean visit(TypeDeclarationStatement node) {
+		ITypeBinding typeBind = node.resolveBinding();
+		String type = typeBind.getName();
+		addTypeToList(type);
+		incDecCount(type);
 		return true;
 	}
 }
