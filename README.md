@@ -78,7 +78,7 @@ BigIncrementer (Removed for now)
 
 Diagrams
 --------
-UML diagram
+UML diagram(DONE)
 
 Sequence Diagrams
 - main(TypeFinder)
