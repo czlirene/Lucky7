@@ -73,13 +73,7 @@ public class TypeVisitor extends ASTVisitor {
 			refCounter.put(type, refCounter.get(type) + 1);
 		}
 	}
-	
-	public static void resetCounters(){
-		types.clear();
-		decCounter.clear();
-		refCounter.clear();
-	}
-	
+
 	public static void printTypes() {
 		for (String type : types) {
 			int refCount = refCounter.get(type);
@@ -124,6 +118,17 @@ public class TypeVisitor extends ASTVisitor {
 		return refCounter;
 	}
 
+	/**
+	 * Clean up method. Allows caller to reset all list and Maps
+	 * in the current instance.
+	 * 
+	 */
+	public void resetCounters(){
+		types.clear();
+		decCounter.clear();
+		refCounter.clear();
+	}
+	
 	/*
 	 * ============================== ASTVisitor FUNCTIONS ==============================
 	 */

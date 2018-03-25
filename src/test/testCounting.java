@@ -18,6 +18,7 @@ import org.junit.After;
 
 public class testCounting {
 	
+	private static TypeVisitor v;
 	/**
 	 * Counts actual declarations and references and compares them
 	 * to their expected values.
@@ -46,7 +47,7 @@ public class testCounting {
 		parser.setCompilerOptions(options);
 		
 		CompilationUnit cu = (CompilationUnit)parser.createAST(null);
-		TypeVisitor v = new TypeVisitor();
+		v = new TypeVisitor();
 		cu.accept(v);
 		
 		Map<String, Integer> refmap = v.getRefCount();
@@ -103,7 +104,7 @@ public class testCounting {
 	
 	@After
 	public void after() {
-		TypeVisitor.resetCounters();
+		v.resetCounters();
 	}
 	
 	@Test
