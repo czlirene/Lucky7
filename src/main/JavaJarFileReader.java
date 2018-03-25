@@ -6,6 +6,7 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.nio.file.DirectoryNotEmptyException;
+import java.nio.file.NotDirectoryException;
 
 
 /**
@@ -56,13 +57,13 @@ public class JavaJarFileReader {
         ArrayList<String> filesContent = new ArrayList<String>();
 
         // Recursively find all ".jar" files in the given directory path
-        ArrayList<String> jarFileNames = getJarFileNames(dirPath);
+        // ArrayList<String> jarFileNames = getJarFileNames(dirPath);
         String fileContent = "";
         
         // Extract all the ".jar" files into the given directory path
-        for (String jarFile : jarFileNames) {
-            extractJarFile(jarFile, dirPath);
-        }
+        // for (String jarFile : jarFileNames) {
+        //     extractJarFile(jarFile, dirPath);
+        // }
 
         // Recursively find all ".java" files in the given directory path
         ArrayList<String> javaFileNames = getJavaFileNames(dirPath);
@@ -132,7 +133,7 @@ public class JavaJarFileReader {
      * @return	ArrayList<String> 	An ArrayList of type String containing all the
      * 								paths to all found JAR files.
      */
-    public static ArrayList<String> getJarFileNames(String dirPath){
+    public static ArrayList<String> getJarFileNames(String dirPath) throws NotDirectoryException{
         File directory = new File(dirPath);
         // Call the recursive function to find all JAR files
         ArrayList<String> jarFileNames = getAllJarFileNames(directory);
@@ -148,7 +149,7 @@ public class JavaJarFileReader {
      * 								paths to all found JAR files located in the current
      * 								directory and all of its sub directories.
      */
-    public static ArrayList<String> getAllJarFileNames(File currDirectory){
+    public static ArrayList<String> getAllJarFileNames(File currDirectory) throws NotDirectoryException{
         ArrayList<String> allJarFiles = new ArrayList<String>();
         ArrayList<String> subDirJarFiles;
 
@@ -212,7 +213,7 @@ public class JavaJarFileReader {
      * @return ArrayList<String> 	An ArrayList of type String containing all
      * 								the paths to all found JAVA files.
      */
-    public static ArrayList<String> getJavaFileNames(String dirPath){
+    public static ArrayList<String> getJavaFileNames(String dirPath) throws IOException{
         File directory = new File(dirPath);
         // call recursive function to retrieve all JAVA files
         ArrayList<String> fileNames = getAllJavaFileNames(directory);
@@ -231,28 +232,24 @@ public class JavaJarFileReader {
      * 								paths to all found JAVA files located in the current
      * 								directory and all of its sub directories .
      */
-    public static ArrayList<String> getAllJavaFileNames(File currDirectory){
+    public static ArrayList<String> getAllJavaFileNames(File currDirectory) throws IOException{
         ArrayList<String> allFileNames = new ArrayList<String>();
         ArrayList<String> subDirFiles;
 
-        try {
-            File[] files = currDirectory.listFiles();
-            for (File file : files){
-                // If there exists a sub directory
-                if (file.isDirectory()){
-                    // store the JAVA files found in the sub directories
-                    subDirFiles = new ArrayList<String>(getAllJavaFileNames(file));
-                    // add all the JAVA files found in the sub directories to main list
-                    allFileNames.addAll(subDirFiles);
-                } else {
-                // otherwise, check if the file is a JAVA file
-                    if (file.isFile() && isJavaFile(file.getName())){
-                        allFileNames.add(file.getPath());
-                    }
+        File[] files = currDirectory.listFiles();
+        for (File file : files){
+            // If there exists a sub directory
+            if (file.isDirectory()){
+                // store the JAVA files found in the sub directories
+                subDirFiles = new ArrayList<String>(getAllJavaFileNames(file));
+                // add all the JAVA files found in the sub directories to main list
+                allFileNames.addAll(subDirFiles);
+            } else {
+            // otherwise, check if the file is a JAVA file
+                if (file.isFile() && isJavaFile(file.getName())){
+                    allFileNames.add(file.getPath());
                 }
             }
-        } catch (Exception e){
-            e.printStackTrace();
         }
 
         return allFileNames;

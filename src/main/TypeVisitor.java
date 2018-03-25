@@ -100,9 +100,9 @@ public class TypeVisitor extends ASTVisitor {
 		// initialize list and counters to null
 		// EDIT: Took out the initializers since the variables are static
 		// that way we can access all the values at the end. Initialized them at the beginning of the program
-// 		types = new ArrayList<String>();
-// 		decCounter = new HashMap<String, Integer>();
-// 		refCounter = new HashMap<String, Integer>();
+		// types = new ArrayList<String>();
+		// decCounter = new HashMap<String, Integer>();
+		// refCounter = new HashMap<String, Integer>();
 	}
 
 	/**

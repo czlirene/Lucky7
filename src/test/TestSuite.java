@@ -5,14 +5,12 @@ import java.io.File;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import main.TypeVisitor;
-
 @RunWith(Suite.class)
 
 /**
  * All Test suites go here.
  */
-@Suite.SuiteClasses({ TypeVisitorBuiltInTest.class })
+@Suite.SuiteClasses({ TypeVisitorBuiltInTest.class, TypeFinderRecursiveTest.class, TypeVisitorNestedFooTests.class})
 
 /**
  * Runs all test classes
@@ -35,6 +33,8 @@ public class TestSuite {
 	 */
 	public static final String JAVA_FILE_READER_TEST_DIR = TEST_DIR.concat("javaFileReaderTestPackage/");
 	public static final String TYPE_FINDER_TEST_DIR = TEST_DIR.concat("typeFinderTestPackage/");
+	public static final String NESTED_JAVA_FILES_TEST_DIR = TEST_DIR.concat("NestedTestFiles/");
+	public static final String NESTED_FOO_FILES_TEST_DIR = TEST_DIR.concat("NestedFooTests/");
 	/**
 	 * Line separator changes depending on operating system. JUnitTests dealing with
 	 * file contents should consider this.

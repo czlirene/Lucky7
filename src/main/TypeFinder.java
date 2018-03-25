@@ -1,14 +1,14 @@
 package main;
 
+import java.util.*;
 import java.nio.file.NotDirectoryException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+
+import test.TestSuite;
 
 
 /**
@@ -65,8 +65,6 @@ public class TypeFinder {
 	private static String directory;
 	
     private static List<String> java_files_as_string = new ArrayList<String>(); // initialize it
-
-	private static boolean debug = true;
 
 	/**
 	 *
@@ -130,26 +128,39 @@ public class TypeFinder {
 	 */
 	public static void main(String[] args) {
 		/* Initialization process */
-		boolean initSuccessful = initFinder(args);
+		// boolean initSuccessful = initFinder(args);
 
-		if (!initSuccessful) {
-			return;
+		// if (!initSuccessful) {
+		// 	return;
+		// }
+		try {
+			java_files_as_string = JavaJarFileReader.getAllFilesToString(TestSuite.NESTED_FOO_FILES_TEST_DIR);
+		} catch (Exception e){
+			e.printStackTrace();
 		}
-
+		
 		/* Create AST */
+		TypeVisitor visitor = new TypeVisitor();
 
 		for (String file : java_files_as_string) {
 			ASTParser parser = getConfiguredASTParser();
 			parser.setSource(file.toCharArray());
 			final CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 
-			TypeVisitor visitor = new TypeVisitor();
 			cu.accept(visitor);
 		}
 		// This will print all the types out with corresponding decclarations and references
 		// in the format that has to be printed to console.
 		// Not a debug message :)
-		TypeVisitor.printTypes();
+		// TypeVisitor.printTypes();
+
+		Map<String, Integer> decCounter = visitor.getDecCount();
+		Map<String, Integer> refCounter = visitor.getRefCount();
+		ArrayList<String> types = visitor.getList();
+
+		for (String type : types){
+			System.out.println(type + ". Declarations found: " + decCounter.get(type) + "; references found: " + refCounter.get(type) + ".");
+		}
 	}	
 }
 

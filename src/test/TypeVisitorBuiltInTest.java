@@ -19,7 +19,7 @@ import main.TypeVisitor;
  * reference counts for Java built-in classes
  *
  * @author Sze Lok Irene Chan
- * @since 22 March, 2018
+ * @since 24 March, 2018
  *
  */
 public class TypeVisitorBuiltInTest {
@@ -75,10 +75,6 @@ public class TypeVisitorBuiltInTest {
 		assertEquals(expectedReferenceCount, ref_count);
 
 }
-	@After
-	public void after(){
-		TypeVisitor.resetCounters();
-	}
 	
 	/**
 	 * Testing a String, looking for no reference to String
@@ -207,7 +203,7 @@ public class TypeVisitorBuiltInTest {
 	}
 
 	/**
-	 * Testing a List, looking for reference to java.util.List
+	 * Testing a List with imports, looking for reference to java.util.List
 	 * Parameters are considered references on their own. 
 	 */
 	@Test
@@ -232,5 +228,22 @@ public class TypeVisitorBuiltInTest {
 		configureParser("public class KFC<String> { } ", "java.lang.String", 0, 1);
 	}
 
-
+	/**
+	 * Check if initializing a variable of String within a for-loop counts as a
+	 * reference
+	 */
+	@Test
+	public void testForLoopInitialization_Dec_0_Ref_1() {
+		configureParser("public class KFC { public void method() { for (String s;;){} }}", "java.lang.String", 0, 1);
+	}
+	
+	/**
+	 * Check that a reference to HashMap<String, Integer> defaults to
+	 * java.util.HashMap with java.util.HashMap import
+	 */
+	@Test
+	public void testJavaUtilHashMapImportedParameterizedAndDeclared_Dec_0_Ref_3() {
+		configureParser("import java.util.HashMap; class KFC { HashMap<String, Integer> map = new HashMap<String, Integer>();}",
+				"java.util.HashMap", 0, 3);
+	}
 }

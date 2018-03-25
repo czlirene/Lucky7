@@ -1,0 +1,27 @@
+test.NestedFooTests.Foo
+    Dec count: 1
+    Ref count: 4
+
+Foo 
+    Dec count: 1
+    Ref count: 0
+
+test.NestedFooTests.Foobar.Foo1
+    Dec count: 1
+    Ref count: 0
+
+test.NestedFooTests.Foobar.Foo
+    Dec count: 1
+    Ref count: 4
+
+test.NestedFooTests.Foobar.Bar
+    Dec count: 1
+    Ref count: 5
+
+test.NestedFooTests.Foobar.Boo
+    Dec count: 1
+    Ref count: 3
+
+test.NestedFooTests.Foobar.Foo.FUBAR
+    Dec count: 1
+    Ref count: 3
