@@ -10,7 +10,6 @@ import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.junit.After;
 import org.junit.Test;
-import org.junit.After;
 
 import main.TypeVisitor;
 
