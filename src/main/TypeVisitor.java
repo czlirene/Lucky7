@@ -391,4 +391,13 @@ public class TypeVisitor extends ASTVisitor {
 		incRefCount(type);
 		return true;
 	}
+	
+	@Override
+	public boolean visit(TypeDeclarationStatement node) {
+		ITypeBinding typeBind = node.resolveBinding();
+		String type = typeBind.getName();
+		addTypeToList(type);
+		incDecCount(type);
+		return true;
+	}
 }
