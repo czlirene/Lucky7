@@ -139,7 +139,7 @@ public class TypeVisitorNestedFooTests {
 	*/
 	@Test
 	public void testNestedFooTests_Foobar_Bar_Dec_1_Ref_5() {
-		validateCount("test.NestedFooTests.Foobar.Bar", 1, 5);
+		validateCount("test.NestedFooTests.Foobar.Bar", 1, 6);
 	}
 
 	/**
