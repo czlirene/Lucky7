@@ -91,7 +91,7 @@ public class TypeVisitorNestedJavaTests{
 	 * Testing to see all the files are read from the directory
 	*/
 	@Test
-	public void testCorrectFileCountForNestedFooTests() throws Exception{
+	public void testCorrectFileCountForNestedProperTests() throws Exception{
 		int result = JavaJarFileReader.getAllFilesToString(TestSuite.NESTED_PROPER_FILES_TEST_DIR).size();
 		assertEquals(5, result);
     }
@@ -106,67 +106,67 @@ public class TypeVisitorNestedJavaTests{
 	}
 	
 	/**
-	 * Testing test.NestedFooTests.Foo in all the files in the nested directory.
+	 * Testing test.NestedProperTests.Foo in all the files in the nested directory.
 	*/
 	@Test
-	public void testNestedFooTests_Foo_Dec_1_Ref_1() throws IOException {
-		validateCount("test.NestedFooTests.Foo", 1, 1);
+	public void testNestedProperTests_Foo_Dec_1_Ref_1() throws IOException {
+		validateCount("test.NestedProperTests.Foo", 1, 1);
 	}
 	
 	/**
-	 * Testing test.NestedFooTests.Foo1 in all the files in the nested directory.
+	 * Testing test.NestedProperTests.Foo1 in all the files in the nested directory.
 	*/
 	@Test
-	public void testNestedFooTests_Foo1_Dec_1_Ref_0() throws IOException {
-		validateCount("test.NestedFooTests.Foo1", 1, 0);
+	public void testNestedProperTests_Foo1_Dec_1_Ref_0() throws IOException {
+		validateCount("test.NestedProperTests.Foo1", 1, 0);
 	}
 	
 	/**
-	 * Testing test.NestedFooTests.Foobar.Foo in all the files in the nested directory.
+	 * Testing test.NestedProperTests.Foobar.Foo in all the files in the nested directory.
 	*/
 	@Test
-	public void testNestedFooTests_Foobar_Foo_Dec_1_Ref_2() throws IOException {
-		validateCount("test.NestedFooTests.Foobar.Foo", 1, 2);
+	public void testNestedProperTests_Foobar_Foo_Dec_1_Ref_2() throws IOException {
+		validateCount("test.NestedProperTests.Foobar.Foo", 1, 2);
 	}
 	
 	/**
-	 * Testing test.NestedFooTests.Foobar.Foo.FUBAR in all the files in the nested directory.
+	 * Testing test.NestedProperTests.Foobar.Foo.FUBAR in all the files in the nested directory.
 	*/
 	@Test
-	public void testNestedFooTests_Foobar_Foo_FUBAR_Dec_1_Ref_0() throws IOException {
-		validateCount("test.NestedFooTests.Foobar.Foo.FUBAR", 1, 0);
+	public void testNestedProperTests_Foobar_Foo_FUBAR_Dec_1_Ref_0() throws IOException {
+		validateCount("test.NestedProperTests.Foobar.Foo.FUBAR", 1, 0);
 	}
 
 	/**
-	 * Testing test.NestedFooTests.Foobar.Boo in all the files in the nested directory.
+	 * Testing test.NestedProperTests.Foobar.Boo in all the files in the nested directory.
 	*/
 	@Test
-	public void testNestedFooTests_Foobar_Boo_Dec_1_Ref_3() throws IOException {
-		validateCount("test.NestedFooTests.Foobar.Boo", 1, 3);
+	public void testNestedProperTests_Foobar_Boo_Dec_1_Ref_3() throws IOException {
+		validateCount("test.NestedProperTests.Foobar.Boo", 1, 3);
 	}
 
 	/**
-	 * Testing test.NestedFooTests.Foobar.Bar in all the files in the nested directory.
+	 * Testing test.NestedProperTests.Foobar.Bar in all the files in the nested directory.
 	*/
 	@Test
-	public void testNestedFooTests_Foobar_Bar_Dec_1_Ref_5() throws IOException {
-		validateCount("test.NestedFooTests.Foobar.Bar", 1, 5);
+	public void testNestedProperTests_Foobar_Bar_Dec_1_Ref_5() throws IOException {
+		validateCount("test.NestedProperTests.Foobar.Bar", 1, 5);
 	}
 
 	/**
-	 * Testing test.NestedFooTests.Foobar.Bar.Fish in all the files in the nested directory.
+	 * Testing test.NestedProperTests.Foobar.Bar.Fish in all the files in the nested directory.
 	*/
 	@Test
-	public void testNestedFooTests_Foobar_Bar_Fish_Dec_1_Ref_3() throws IOException {
-		validateCount("test.NestedFooTests.Foobar.Bar.Fish", 1, 3);
+	public void testNestedProperTests_Foobar_Bar_Fish_Dec_1_Ref_3() throws IOException {
+		validateCount("test.NestedProperTests.Foobar.Bar.Fish", 1, 3);
 	}
 
 	/**
-	 * Testing test.NestedFooTests.Foobar.Bar.LambdaMe in all the files in the nested directory.
+	 * Testing test.NestedProperTests.Foobar.Bar.LambdaMe in all the files in the nested directory.
 	*/
 	@Test
-	public void testNestedFooTests_Foobar_Bar_LambdaMe_Dec_1_Ref_1() throws IOException {
-		validateCount("test.NestedFooTests.Foobar.Bar.LambdaMe", 1, 1);
+	public void testNestedProperTests_Foobar_Bar_LambdaMe_Dec_1_Ref_1() throws IOException {
+		validateCount("test.NestedProperTests.Foobar.Bar.LambdaMe", 1, 1);
 	}
 
 	/**
