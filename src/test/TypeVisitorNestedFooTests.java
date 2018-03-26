@@ -119,7 +119,7 @@ public class TypeVisitorNestedFooTests {
 	}
 
 	/**
-	 * Testing test.NestedFooTests.Foo1 in all the files in the nested directory.
+	 * Testing Foo in all the files in the nested directory.
 	*/
 	@Test
 	public void testLocalClass_Foo_Dec_1_Ref_0() {

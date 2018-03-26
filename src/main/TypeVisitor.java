@@ -179,6 +179,32 @@ public class TypeVisitor extends ASTVisitor {
 		return true;
 	}
 
+	@Override
+    public boolean visit(MethodDeclaration node) {
+        Type returnType = node.getReturnType2();
+        if (returnType != null && !returnType.isPrimitiveType() && returnType.isSimpleType()) {
+            ITypeBinding iBinding = node.getReturnType2().resolveBinding();
+            String type = iBinding.getQualifiedName();
+            System.out.println("METHOD DEC: " + type);
+            
+            addTypeToList(type);
+            incRefCount(type);
+        }
+        
+        if (node.isConstructor()) {
+			IMethodBinding methodBinding = node.resolveBinding();
+			ITypeBinding declaringclass = methodBinding.getDeclaringClass();
+			String declaringclassName = declaringclass.getQualifiedName();
+			
+			addTypeToList(declaringclassName);
+			incRefCount(declaringclassName);
+			
+			System.out.println("result5: " + declaringclassName);
+		}
+
+        return true;
+    }
+	
 	/**
 	 * Visits a type declaration node type. Type declaration node is the union of
 	 * class declaration, and interface declaration.
@@ -194,6 +220,29 @@ public class TypeVisitor extends ASTVisitor {
 	 */
 	@Override
 	public boolean visit(TypeDeclaration node) {
+		List<Type> siTypes = new ArrayList<Type>(node.superInterfaceTypes().size());
+		for (Object o : node.superInterfaceTypes()) {
+			siTypes.add((Type) o);
+		}
+		for (Type intType : siTypes) {
+			if (intType.isSimpleType()) {	
+				ITypeBinding[] ibind = node.resolveBinding().getInterfaces();
+			
+				//ITypeBinding typeBind = type.resolveBinding();
+				String type2 = ibind[0].getQualifiedName();
+
+				System.out.println("\nSuperInterfaceType: " + type2);
+				
+				addTypeToList(type2);
+				incRefCount(type2);
+			}
+		}
+		
+		//SimpleType nodeType = (SimpleType) node.getType();
+		
+
+		
+		
 		if (!node.isLocalTypeDeclaration()) {
 			// get the Identifier and add +1 to the declaration count
 			ITypeBinding typeBind = node.resolveBinding();
@@ -212,7 +261,12 @@ public class TypeVisitor extends ASTVisitor {
 			addTypeToList(localClassName);
 			incDecCount(localClassName);
 		}
+		
+		
+		
+		
 		return true;
+		
 	}
 	
 	/**
@@ -297,7 +351,7 @@ public class TypeVisitor extends ASTVisitor {
 			}
 			
 			//if (debug)
-				System.out.println(type1 + "'s bindtype: " + bindtype);
+				//System.out.println(type1 + "'s bindtype: " + bindtype);
 			
 			if (bindtype == 2) {
 				ITypeBinding typeBind = node.resolveTypeBinding();
@@ -321,58 +375,58 @@ public class TypeVisitor extends ASTVisitor {
 					}
 				}
 				
-				// taking care of the rest of the SimpleName types
-				else {
-					// check if the identifier part of the node name is the same as
-					// the identifier of the name after resolving binding.
-					// If they are equal, then add this to the ref count.
-					if (type1.equals(type2)) {
-						String type = typeBind.getQualifiedName();
-						addTypeToList(type);
-						incRefCount(type);
-						
-						System.out.println("result2: " + type);
-					}
-				}
+//				// taking care of the rest of the SimpleName types
+//				else {
+//					// check if the identifier part of the node name is the same as
+//					// the identifier of the name after resolving binding.
+//					// If they are equal, then add this to the ref count.
+//					if (type1.equals(type2)) {
+//						String type = typeBind.getQualifiedName();
+//						addTypeToList(type);
+//						incRefCount(type);
+//						
+//						System.out.println("result2: " + type);
+//					}
+//				}
 			}
 			
 			// if the bindtype is 0, add the reference counter;
 			// this takes care of the cases where there is a reference to a random class
 			// that has not been implemented.
-			else if (bindtype == 0) {
-				// see if this is from SimpleType
-				// if it is not, don't count it in
-				if (parent.getClass().getName().contains("SimpleType")) {
-					SimpleType sNode = (SimpleType) parent;
-					Name simpletypeName = sNode.getName();
-					String simpletypeNameQualified = simpletypeName.getFullyQualifiedName();
-					
-					addTypeToList(simpletypeNameQualified);
-					incRefCount(simpletypeNameQualified);
-					
-					//System.out.println("result3: " + simpletypeNameQualified);
-				}
-			}
+//			else if (bindtype == 0) {
+//				// see if this is from SimpleType
+//				// if it is not, don't count it in
+//				if (parent.getClass().getName().contains("SimpleType")) {
+//					SimpleType sNode = (SimpleType) parent;
+//					Name simpletypeName = sNode.getName();
+//					String simpletypeNameQualified = simpletypeName.getFullyQualifiedName();
+//					
+//					addTypeToList(simpletypeNameQualified);
+//					incRefCount(simpletypeNameQualified);
+//					
+//					//System.out.println("result3: " + simpletypeNameQualified);
+//				}
+//			}
 
 			// if the bindtype is 4, add the reference counter ONLY IF
 			// the parent node is MethodDeclaration and only if the MethodDeclaration node
 			// is a constructor
-			else if (bindtype == 4) {
-				if (parent.getClass().getName().contains("MethodDeclaration")) {
-					MethodDeclaration mNode = (MethodDeclaration) parent;
-					
-					if (mNode.isConstructor()) {
-						IMethodBinding methodBinding = mNode.resolveBinding();
-						ITypeBinding declaringclass = methodBinding.getDeclaringClass();
-						String declaringclassName = declaringclass.getQualifiedName();
-						
-						addTypeToList(declaringclassName);
-						incRefCount(declaringclassName);
-						
-						//System.out.println("result5: " + declaringclassName);
-					}
-				}
-			}
+//			else if (bindtype == 4) {
+//				if (parent.getClass().getName().contains("MethodDeclaration")) {
+//					MethodDeclaration mNode = (MethodDeclaration) parent;
+//					
+//					if (mNode.isConstructor()) {
+//						IMethodBinding methodBinding = mNode.resolveBinding();
+//						ITypeBinding declaringclass = methodBinding.getDeclaringClass();
+//						String declaringclassName = declaringclass.getQualifiedName();
+//						
+//						addTypeToList(declaringclassName);
+//						incRefCount(declaringclassName);
+//						
+//						//System.out.println("result5: " + declaringclassName);
+//					}
+//				}
+//			}
 		}
 
 		return true;
@@ -406,6 +460,8 @@ public class TypeVisitor extends ASTVisitor {
 		String type = typeBind.getQualifiedName();
 		
 		if (node.getPrimitiveTypeCode().toString() != "void") {
+			
+			//System.out.println("PrimitiveType: " + type);
 			addTypeToList(type);
 			incRefCount(type);
 		}
@@ -432,8 +488,24 @@ public class TypeVisitor extends ASTVisitor {
 		ITypeBinding typeBind = node.resolveBinding();
 		String type = typeBind.getQualifiedName();
 		
+		System.out.println("ArrayType: " + type);
+		
 		addTypeToList(type);
 		incRefCount(type);
+		
+		
+		
+		if (node.getElementType().isSimpleType()) {
+			SimpleType nodeType = (SimpleType) node.getElementType();
+			ITypeBinding typeBind2 = nodeType.resolveBinding();
+			String type2 = typeBind2.getQualifiedName();
+			
+			System.out.println("ArrayTypeElement: " + type2);
+			
+			addTypeToList(type2);
+			incRefCount(type2);
+		}
+		
 		return true;
 	}
 	
@@ -445,11 +517,119 @@ public class TypeVisitor extends ASTVisitor {
 		ITypeBinding nameBind = variableName.resolveTypeBinding();
 		String type = nameBind.getQualifiedName();
 		
-		if (type.contains("[]")) {
+//		if (type.contains("[]")) {
+//			addTypeToList(type);
+//			incRefCount(type);
+//		}
+		
+		if (node.getType().isSimpleType()) {
+			SimpleType nodeType = (SimpleType) node.getType();
+			ITypeBinding typeBind2 = nodeType.resolveBinding();
+			String type2 = typeBind2.getQualifiedName();
+			
+			System.out.println("SingleVarDeclaration: " + type2);
+			
+			addTypeToList(type2);
+			incRefCount(type2);
+		}
+		
+		
+		return true;
+	}
+	@Override
+	public boolean visit(ClassInstanceCreation node) {
+
+
+		if (node.getType().isSimpleType()) {
+//			SimpleType nodeType = (SimpleType) node.getType();
+//			ITypeBinding typeBind = nodeType.resolveBinding();
+//			String type = typeBind.getQualifiedName();
+//			
+			ITypeBinding typeBind = node.resolveTypeBinding();
+			String type = typeBind.getQualifiedName();
+			System.out.println("ClassInstance: " + type);
+			
 			addTypeToList(type);
 			incRefCount(type);
 		}
 		
+		
+		return true;
+	}
+	
+	@Override
+	public boolean visit(ParameterizedType node) {
+		
+		List<Type> typeArgs = node.typeArguments();
+		for (Type arg : typeArgs) {
+			String type = arg.resolveBinding().getQualifiedName();
+			addTypeToList(type);
+			incRefCount(type);
+			
+			System.out.println("typeArgument: " + type);
+		}
+		
+		return true;
+	}
+	
+	@Override
+	public boolean visit(MarkerAnnotation node) {
+		
+		String type = node.resolveTypeBinding().getQualifiedName();
+		addTypeToList(type);
+		incRefCount(type);
+		
+		System.out.println("MarkerAnnotation: " + type);
+		return true;
+	}
+	
+	@Override
+	public boolean visit(VariableDeclarationStatement node) {
+		
+		if (node.getType().isSimpleType()) {
+			SimpleType nodeType = (SimpleType) node.getType();
+			ITypeBinding typeBind = nodeType.resolveBinding();
+			String type = typeBind.getQualifiedName();
+			
+			System.out.println("VariableDeclarationStatement: " + type);
+			
+			addTypeToList(type);
+			incRefCount(type);
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean visit(MethodInvocation node) {
+		
+		if (node.getExpression() != null && node.getExpression().getNodeType() == ASTNode.QUALIFIED_NAME) {
+			QualifiedName qnNode = (QualifiedName) node.getExpression();
+			if (qnNode.getQualifier().isSimpleName()) {
+				String type = qnNode.getQualifier().resolveTypeBinding().getQualifiedName();
+				
+				System.out.println("MethodInvocation: " + type);
+				
+				addTypeToList(type);
+				incRefCount(type);
+			}
+	
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean visit(FieldDeclaration node) {
+		
+		if (node.getType().isSimpleType()) {
+			SimpleType nodeType = (SimpleType) node.getType();
+			ITypeBinding typeBind = nodeType.resolveBinding();
+			String type = typeBind.getQualifiedName();
+			
+			System.out.println("FieldDeclaration: " + type);
+			
+			addTypeToList(type);
+			incRefCount(type);
+		}
 		return true;
 	}
 }
