@@ -16,7 +16,7 @@ test.NestedFooTests.Foobar.Foo
 
 test.NestedFooTests.Foobar.Bar
     Dec count: 1
-    Ref count: 5
+    Ref count: 6
 
 test.NestedFooTests.Foobar.Boo
     Dec count: 1

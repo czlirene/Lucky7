@@ -138,7 +138,7 @@ public class TypeVisitorNestedFooTests {
 	 * Testing test.NestedFooTests.Foobar.Bar in all the files in the nested directory.
 	*/
 	@Test
-	public void testNestedFooTests_Foobar_Bar_Dec_1_Ref_5() {
+	public void testNestedFooTests_Foobar_Bar_Dec_1_Ref_6() {
 		validateCount("test.NestedFooTests.Foobar.Bar", 1, 6);
 	}
 
