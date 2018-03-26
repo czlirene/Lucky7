@@ -123,7 +123,8 @@ public class JavaJarFileReader {
 
 		// Retrieve the content of each ".java" file, and store it into the list
 
-
+		File file = new File(temp, "\\------");
+		delete(file);
 		return filesContent;
 	}
 
@@ -320,4 +321,35 @@ public class JavaJarFileReader {
     //         System.out.println(name);
     //     }
     // }
+	
+		
+	public static void delete(File file) throws IOException{
+		if(file.isDirectory()){
+			//directory is empty, then delete it
+			if(file.list().length==0) {
+				file.delete();
+				//System.out.println("Directory is deleted : " + file.getAbsolutePath());		//Was just for testing
+			} 
+			else {
+				//list all the directory contents
+				String files[] = file.list();
+				for (String temp : files) {
+					//construct the file structure
+					File fileDelete = new File(file, temp);
+					//recursive delete
+					delete(fileDelete);
+				}
+				//check the directory again, if empty then delete it
+				if(file.list().length==0){
+					file.delete();
+					//System.out.println("Directory is deleted : " + file.getAbsolutePath());   //was just for testing
+				}
+		    }
+		}
+		else {
+			//if file, then delete it
+			file.delete();
+			//System.out.println("File is deleted : " + file.getAbsolutePath());				//Was just for testing
+		}
+	}
 }
