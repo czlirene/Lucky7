@@ -328,7 +328,7 @@ public class JavaJarFileReader {
 			//directory is empty, then delete it
 			if(file.list().length==0) {
 				file.delete();
-				//System.out.println("Directory is deleted : " + file.getAbsolutePath());		//Was just for testing
+				
 			} 
 			else {
 				//list all the directory contents
@@ -342,14 +342,12 @@ public class JavaJarFileReader {
 				//check the directory again, if empty then delete it
 				if(file.list().length==0){
 					file.delete();
-					//System.out.println("Directory is deleted : " + file.getAbsolutePath());   //was just for testing
 				}
 		    }
 		}
 		else {
 			//if file, then delete it
 			file.delete();
-			//System.out.println("File is deleted : " + file.getAbsolutePath());				//Was just for testing
 		}
 	}
 }
