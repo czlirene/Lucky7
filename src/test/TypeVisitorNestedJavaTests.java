@@ -254,7 +254,7 @@ public class TypeVisitorNestedJavaTests{
 	*/
 	@Test
 	public void testUtil_List_Dec_0_Ref_3() throws IOException {
-		validateCount("java.util.List", 0, 3);
+		validateCount("java.util.List", 0, 4);
 	}
 
 	/**
@@ -270,7 +270,7 @@ public class TypeVisitorNestedJavaTests{
 	*/
 	@Test
 	public void testUtil_LinkedList_Dec_0_Ref_2() throws IOException {
-		validateCount("java.util.LinkedList", 0, 2);
+		validateCount("java.util.LinkedList", 0, 3);
 	}
 
 	/**

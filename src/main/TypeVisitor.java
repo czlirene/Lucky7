@@ -237,7 +237,7 @@ public class TypeVisitor extends ASTVisitor {
 		// isDeclaration() returns true if a name is defined:
 		// the type name in a TypeDeclaration node -> DONE
 		// the method name in a MethodDeclaration node providing isConstructor is false -> WE DON'T HAVE TO BOTHER
-		// The variable name in any type of VariableDeclaration node -> WE DON'T HAVE TO BOTHER
+		// The variable name in any type of VariableDeclaration node -> WE HAVE TO BOTHER
 		// The enum type name in a EnumDeclaration node -> DONE
 		// The enum constant name in an EnumConstantDeclaration node -> WE DON'T HAVE TO BOTHER
 		// The variable name in an EnhancedForStatement node -> WE DON'T HAVE TO BOTHER
@@ -443,6 +443,22 @@ public class TypeVisitor extends ASTVisitor {
 		String type = typeBind.getName();
 		addTypeToList(type);
 		incDecCount(type);
+		return true;
+	}
+	
+	@Override
+	public boolean visit(SingleVariableDeclaration node) {
+		// if the variable refers to some array, we need to add +1 to the reference
+		// get the name of the variable
+		SimpleName variableName = node.getName();
+		ITypeBinding nameBind = variableName.resolveTypeBinding();
+		String type = nameBind.getQualifiedName();
+		
+		if (type.contains("[]")) {
+			addTypeToList(type);
+			incRefCount(type);
+		}
+		
 		return true;
 	}
 }
