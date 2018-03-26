@@ -289,7 +289,7 @@ public class TypeVisitor extends ASTVisitor {
 				addTypeToList(importingNameQualified);
 				incRefCount(importingNameQualified);
 				
-				System.out.println("result4: " + importingNameQualified);
+				//System.out.println("result4: " + importingNameQualified);
 				return true;
 			}
 			else if (parent.getClass().getName().contains("ImportDeclaration") && levelCounter != 1) {
@@ -317,7 +317,7 @@ public class TypeVisitor extends ASTVisitor {
 						addTypeToList(type);
 						incRefCount(type);
 						
-						System.out.println("result1: " + type);
+						//System.out.println("result1: " + type);
 					}
 				}
 				
@@ -350,7 +350,7 @@ public class TypeVisitor extends ASTVisitor {
 					addTypeToList(simpletypeNameQualified);
 					incRefCount(simpletypeNameQualified);
 					
-					System.out.println("result3: " + simpletypeNameQualified);
+					//System.out.println("result3: " + simpletypeNameQualified);
 				}
 			}
 
@@ -369,7 +369,7 @@ public class TypeVisitor extends ASTVisitor {
 						addTypeToList(declaringclassName);
 						incRefCount(declaringclassName);
 						
-						System.out.println("result5: " + declaringclassName);
+						//System.out.println("result5: " + declaringclassName);
 					}
 				}
 			}
@@ -434,15 +434,6 @@ public class TypeVisitor extends ASTVisitor {
 		
 		addTypeToList(type);
 		incRefCount(type);
-		return true;
-	}
-	
-	@Override
-	public boolean visit(TypeDeclarationStatement node) {
-		ITypeBinding typeBind = node.resolveBinding();
-		String type = typeBind.getName();
-		addTypeToList(type);
-		incDecCount(type);
 		return true;
 	}
 	
