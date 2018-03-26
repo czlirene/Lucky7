@@ -12,7 +12,7 @@ import java.nio.file.NotDirectoryException;
 /**
  * Recursively find all ".java" and ".jar" files in a given directory. This reader will
  * extract all the JAR files, and retrieve source code from all found JAVA files.
- *    
+ *
  * @author 	Sze Lok Irene Chan
  * @since 	20 March, 2018
  * @version 1.0
@@ -22,7 +22,7 @@ public class JavaJarFileReader {
 
 	/**
 	 * Check the file extension for ".java"
-	 * 
+	 *
 	 * @param fileName
 	 * @return true if file is a ".java" file, false otherwise
 	 */
@@ -32,7 +32,7 @@ public class JavaJarFileReader {
 
     /**
      * Check the file extension for ".jar"
-     * 
+     *
      * @param fileName
      * @return true if file is a ".jar" file, false otherwise
      */
@@ -42,47 +42,47 @@ public class JavaJarFileReader {
 /*
     /**
      * From a given directory path, find and read the content of all JAVA files,
-     * and return their content as an array list of strings. 
-     *  
+     * and return their content as an array list of strings.
+     *
      * @param dirPath 		Directory to be searched
      * @return ArrayList<String> 	List of each JAVA file as String
-     * @throws DirectoryNotEmptyException 
+     * @throws DirectoryNotEmptyException
      * 			Thrown if a directory cannot be found
      * @throws IOException
      * 			Thrown if any other IO problems are encountered.
      */
-    public static ArrayList<String> getAllFilesToString(String dirPath) 
-            throws DirectoryNotEmptyException, IOException {
-
-        ArrayList<String> filesContent = new ArrayList<String>();
+//    public static ArrayList<String> getAllFilesToString(String dirPath)
+//            throws DirectoryNotEmptyException, IOException {
+//
+//        ArrayList<String> filesContent = new ArrayList<String>();
 
         // Recursively find all ".jar" files in the given directory path
         // ArrayList<String> jarFileNames = getJarFileNames(dirPath);
-        String fileContent = "";
-        
+//        String fileContent = "";
+
         // Extract all the ".jar" files into the given directory path
         // for (String jarFile : jarFileNames) {
         //     extractJarFile(jarFile, dirPath);
         // }
 
         // Recursively find all ".java" files in the given directory path
-        ArrayList<String> javaFileNames = getJavaFileNames(dirPath);
+//        ArrayList<String> javaFileNames = getJavaFileNames(dirPath);
 
         // Retrieve the content of each ".java" file, and store it into the list
-        for (String fileName : javaFileNames){
-            if (isJavaFile(fileName)){
-                fileContent = getJavaFileContentToString(fileName);
-            }
-            filesContent.add(fileContent);
-        }
+  //      for (String fileName : javaFileNames){
+  //          if (isJavaFile(fileName)){
+//                fileContent = getJavaFileContentToString(fileName);
+    //        }
+      //      filesContent.add(fileContent);
+        //}
 
-        return filesContent;
-    } 
-*/
+        //return filesContent;
+//    }
+//*/
 		/**
 	 * From a given directory path, find and read the content of all JAVA files, and
 	 * return their content as an array list of strings.
-	 * 
+	 *
 	 * @param dirPath
 	 *            Directory to be searched
 	 * @return ArrayList<String> List of each JAVA file as String
@@ -94,7 +94,7 @@ public class JavaJarFileReader {
 	public static ArrayList<String> getAllFilesToString(String dirPath) throws DirectoryNotEmptyException, IOException {
 		String temp = dirPath;
 		ArrayList<String> filesContent = new ArrayList<String>();
-		
+
 		// Recursively find all ".jar" files in the given directory path
 		ArrayList<String> jarFileNames = getJarFileNames(dirPath);
 		ArrayList<String> javaFileNames = getJavaFileNames(dirPath);
@@ -106,31 +106,31 @@ public class JavaJarFileReader {
 			extractJarFile(jarFile, dirPath);
 			filesContent.addAll(getAllFilesToString(dirPath));
 			dirPath = dirPath + "\\----------";
-		
+
 		}
-		
+
 		for (String fileName : javaFileNames) {
 			if (isJavaFile(fileName)) {
 				fileContent = getJavaFileContentToString(fileName);
 			}
-			
+
 			filesContent.add(fileContent);
 		}
-		
+
 
 		// Recursively find all ".java" files in the given directory path
-		
+
 
 		// Retrieve the content of each ".java" file, and store it into the list
-		
-		
+
+
 		return filesContent;
 	}
 
     /**
      * Given a JAR file, and the target directory path, extract the JAR file
      * into the target path.
-     * 
+     *
      * @param jarFile	The absolute path of the JAR file to be extracted
      * @param destDir	Target path to extract the JAR file into
      * @throws IOException
@@ -149,7 +149,7 @@ public class JavaJarFileReader {
 
             // Check if file already exists
             if (!file.exists()){
-                // Create directories if it's not 
+                // Create directories if it's not
                 file.getParentFile().mkdirs();
                 file = new File (destDir, jFile.getName());
             }
@@ -174,9 +174,9 @@ public class JavaJarFileReader {
     }
 
     /**
-     * Recursively find all the JAR files from the given directory path, 
+     * Recursively find all the JAR files from the given directory path,
      * and store the path of the JAR file into a list.
-     * 
+     *
      * @param dirPath 	The directory of interest
      * @return	ArrayList<String> 	An ArrayList of type String containing all the
      * 								paths to all found JAR files.
@@ -189,9 +189,9 @@ public class JavaJarFileReader {
     }
 
     /**
-     * Recursive function to find all the JAR files located in the 
-     * current directory and its sub directories. 
-     * 
+     * Recursive function to find all the JAR files located in the
+     * current directory and its sub directories.
+     *
      * @param currDirectory 	Current directory path
      * @return ArrayList<String> 	An ArrayList of type String containing all the
      * 								paths to all found JAR files located in the current
@@ -227,11 +227,11 @@ public class JavaJarFileReader {
     /**
      * Read the content of a JAVA file, and returns the content
      * of the file as a String.
-     * 
+     *
      * @param file 		Path of the JAVA file to be read
      * @return String 	Content of the JAVA file
      * @throws IOException
-     * 			Thrown if any IO problems are encountered 
+     * 			Thrown if any IO problems are encountered
      */
     public static String getJavaFileContentToString(String file) throws IOException{
         FileReader fileReader = new FileReader(file);
@@ -256,7 +256,7 @@ public class JavaJarFileReader {
     /**
      * Recursively find all the JAVA files from the given directory path,
      * and store the path of the JAVA file into a list.
-     * 
+     *
      * @param dirPath 	The directory of interest
      * @return ArrayList<String> 	An ArrayList of type String containing all
      * 								the paths to all found JAVA files.
@@ -274,7 +274,7 @@ public class JavaJarFileReader {
     /**
      * Recursive function to find all the JAVA files located
      * in the current directory and its sub directories.
-     * 
+     *
      * @param currDirectory 	Current directory path
      * @return ArrayList<String> 	An ArrayList of type String containing all the
      * 								paths to all found JAVA files located in the current
@@ -302,7 +302,7 @@ public class JavaJarFileReader {
 
         return allFileNames;
     }
-    
+
     // Debug purpose
     // public static void main (String[] args) throws IOException{
     //     JavaJarFileReader x = new JavaJarFileReader();

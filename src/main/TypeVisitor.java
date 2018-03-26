@@ -251,14 +251,9 @@ public class TypeVisitor extends ASTVisitor {
 		// However, the PackageDeclaration will have the bindtype of 1,
 		// so it will not be counted in this node -> Gotta count the PackageDeclaration
 		// in a separate node
-		System.out.println("debug1: " + node.getFullyQualifiedName());
-		
 		if (!node.isDeclaration())
-		{
+		{	
 			String type1 = node.getFullyQualifiedName();
-			
-			System.out.println("debug2: " + type1);
-			
 			// Determine what kind of binding this is.
 			// bindtype == 1 if it's a package binding -> DONE
 			// bindtype == 2 if it's a type binding -> DONE
@@ -277,7 +272,31 @@ public class TypeVisitor extends ASTVisitor {
 				bindtype = binding.getKind();
 			}
 			
-			if (debug)
+			// see if this is from ImportDeclaration
+			// if it is not, don't count it in
+			ASTNode parent = node.getParent();
+			int levelCounter = 0;
+			while (parent.getClass().getName().contains("QualifiedName")) {
+				levelCounter++;
+				parent = parent.getParent();
+			}
+			
+			if (parent.getClass().getName().contains("ImportDeclaration") && levelCounter == 1) {
+				ImportDeclaration iNode = (ImportDeclaration) parent;
+				Name importingName = iNode.getName();
+				String importingNameQualified = importingName.getFullyQualifiedName();
+				
+				addTypeToList(importingNameQualified);
+				incRefCount(importingNameQualified);
+				
+				System.out.println("result4: " + importingNameQualified);
+				return true;
+			}
+			else if (parent.getClass().getName().contains("ImportDeclaration") && levelCounter != 1) {
+				return true;
+			}
+			
+			//if (debug)
 				System.out.println(type1 + "'s bindtype: " + bindtype);
 			
 			if (bindtype == 2) {
@@ -297,6 +316,8 @@ public class TypeVisitor extends ASTVisitor {
 						type = type.substring(0, type.indexOf("<"));
 						addTypeToList(type);
 						incRefCount(type);
+						
+						System.out.println("result1: " + type);
 					}
 				}
 				
@@ -309,6 +330,8 @@ public class TypeVisitor extends ASTVisitor {
 						String type = typeBind.getQualifiedName();
 						addTypeToList(type);
 						incRefCount(type);
+						
+						System.out.println("result2: " + type);
 					}
 				}
 			}
@@ -319,11 +342,15 @@ public class TypeVisitor extends ASTVisitor {
 			else if (bindtype == 0) {
 				// see if this is from SimpleType
 				// if it is not, don't count it in
-				ASTNode parent = node.getParent();
-				
 				if (parent.getClass().getName().contains("SimpleType")) {
-					addTypeToList(type1);
-					incRefCount(type1);
+					SimpleType sNode = (SimpleType) parent;
+					Name simpletypeName = sNode.getName();
+					String simpletypeNameQualified = simpletypeName.getFullyQualifiedName();
+					
+					addTypeToList(simpletypeNameQualified);
+					incRefCount(simpletypeNameQualified);
+					
+					System.out.println("result3: " + simpletypeNameQualified);
 				}
 			}
 
@@ -331,15 +358,18 @@ public class TypeVisitor extends ASTVisitor {
 			// the parent node is MethodDeclaration and only if the MethodDeclaration node
 			// is a constructor
 			else if (bindtype == 4) {
-				ASTNode parent = node.getParent();
-				
 				if (parent.getClass().getName().contains("MethodDeclaration")) {
 					MethodDeclaration mNode = (MethodDeclaration) parent;
 					
 					if (mNode.isConstructor()) {
-						System.out.println(type1);
-						addTypeToList(type1);
-						incRefCount(type1);
+						IMethodBinding methodBinding = mNode.resolveBinding();
+						ITypeBinding declaringclass = methodBinding.getDeclaringClass();
+						String declaringclassName = declaringclass.getQualifiedName();
+						
+						addTypeToList(declaringclassName);
+						incRefCount(declaringclassName);
+						
+						System.out.println("result5: " + declaringclassName);
 					}
 				}
 			}
