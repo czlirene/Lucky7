@@ -7,7 +7,7 @@ import test.NestedFooTests.Foobar.Bar;
 // ref count = 0
 
 // test.NestedFooTests.Foobar.Bar
-// ref count = 2
+// ref count = 3
 
 // test.NestedFooTests.Foobar.Boo
 // ref count = 1
