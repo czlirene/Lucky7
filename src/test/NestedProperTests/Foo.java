@@ -5,6 +5,10 @@ import java.util.ArrayList;
 
 // test.NestedProperTests.Foo
 //  dec count: 1
+// ref count = 1
+
+// int
+// ref count : 1
 
 // java.lang.String
 // ref count: 4
@@ -15,8 +19,6 @@ import java.util.ArrayList;
 // java.util.ArrayList
 // ref count: 4
 
-// int
-// ref count : 1
 
 public class Foo {
     int primType;

@@ -95,13 +95,223 @@ public class TypeVisitorNestedJavaTests{
 		int result = JavaJarFileReader.getAllFilesToString(TestSuite.NESTED_PROPER_FILES_TEST_DIR).size();
 		assertEquals(5, result);
     }
-    
+
+    /**
+	 * Testing to see if all the types have been detected
+	*/
+	@Test
+	public void testCorrectTypeFoundForNestedJavaTests() throws Exception{
+		int result = visitor.getList().size();
+		assertEquals(27, result);
+	}
+	
+	/**
+	 * Testing test.NestedFooTests.Foo in all the files in the nested directory.
+	*/
+	@Test
+	public void testNestedFooTests_Foo_Dec_1_Ref_1() throws IOException {
+		validateCount("test.NestedFooTests.Foo", 1, 1);
+	}
+	
+	/**
+	 * Testing test.NestedFooTests.Foo1 in all the files in the nested directory.
+	*/
+	@Test
+	public void testNestedFooTests_Foo1_Dec_1_Ref_0() throws IOException {
+		validateCount("test.NestedFooTests.Foo1", 1, 0);
+	}
+	
+	/**
+	 * Testing test.NestedFooTests.Foobar.Foo in all the files in the nested directory.
+	*/
+	@Test
+	public void testNestedFooTests_Foobar_Foo_Dec_1_Ref_2() throws IOException {
+		validateCount("test.NestedFooTests.Foobar.Foo", 1, 2);
+	}
+	
+	/**
+	 * Testing test.NestedFooTests.Foobar.Foo.FUBAR in all the files in the nested directory.
+	*/
+	@Test
+	public void testNestedFooTests_Foobar_Foo_FUBAR_Dec_1_Ref_0() throws IOException {
+		validateCount("test.NestedFooTests.Foobar.Foo.FUBAR", 1, 0);
+	}
+
+	/**
+	 * Testing test.NestedFooTests.Foobar.Boo in all the files in the nested directory.
+	*/
+	@Test
+	public void testNestedFooTests_Foobar_Boo_Dec_1_Ref_3() throws IOException {
+		validateCount("test.NestedFooTests.Foobar.Boo", 1, 3);
+	}
+
+	/**
+	 * Testing test.NestedFooTests.Foobar.Bar in all the files in the nested directory.
+	*/
+	@Test
+	public void testNestedFooTests_Foobar_Bar_Dec_1_Ref_5() throws IOException {
+		validateCount("test.NestedFooTests.Foobar.Bar", 1, 5);
+	}
+
+	/**
+	 * Testing test.NestedFooTests.Foobar.Bar.Fish in all the files in the nested directory.
+	*/
+	@Test
+	public void testNestedFooTests_Foobar_Bar_Fish_Dec_1_Ref_3() throws IOException {
+		validateCount("test.NestedFooTests.Foobar.Bar.Fish", 1, 3);
+	}
+
+	/**
+	 * Testing test.NestedFooTests.Foobar.Bar.LambdaMe in all the files in the nested directory.
+	*/
+	@Test
+	public void testNestedFooTests_Foobar_Bar_LambdaMe_Dec_1_Ref_1() throws IOException {
+		validateCount("test.NestedFooTests.Foobar.Bar.LambdaMe", 1, 1);
+	}
+
+	/**
+	 * Testing localme in all the files in the nested directory.
+	*/
+	@Test
+	public void testLocalMe_Dec_1_Ref_0() throws IOException {
+		validateCount("LocalMe", 1, 0);
+	}
+
 	/**
 	 * Testing java.lang.String in all the files in the nested directory.
 	*/
 	@Test
-	public void testString_Dec_0_Ref_0() throws IOException {
-		validateCount("java.lang.String", 0, 0);
+	public void testString_Dec_0_Ref_6() throws IOException {
+		validateCount("java.lang.String", 0, 6);
 	}
+	
+	/**
+	 * Testing java.lang.String[] in all the files in the nested directory.
+	 */
+	@Test
+	public void testString_Array_Dec_0_Ref_2() throws IOException {
+		validateCount("java.lang.String[]", 0, 2);
+	}
+
+	/**
+	 * Testing java.lang.Integer in all the files in the nested directory.
+	*/
+	@Test
+	public void testInteger_Dec_0_Ref_1() throws IOException {
+		validateCount("java.lang.Integer", 0, 1);
+	}
+	
+	/**
+	 * Testing java.lang.Integer[] in all the files in the nested directory.
+	*/
+	@Test
+	public void testInteger_Array_Dec_0_Ref_1() throws IOException {
+		validateCount("java.lang.Integer[]", 0, 1);
+	}
+
+	/**
+	 * Testing java.lang.Thread in all the files in the nested directory.
+	*/
+	@Test
+	public void testThread_Dec_0_Ref_7() throws IOException {
+		validateCount("java.lang.Thread", 0, 7);
+	}
+
+	/**
+	 * Testing java.lang.System in all the files in the nested directory.
+	*/
+	@Test
+	public void testSystem_Dec_0_Ref_1() throws IOException {
+		validateCount("java.lang.System", 0, 1);
+	}
+
+	/**
+	 * Testing java.lang.Deprecated in all the files in the nested directory.
+	*/
+	@Test
+	public void testDeprecated_Dec_0_Ref_1() throws IOException {
+		validateCount("java.lang.Deprecated", 0, 1);
+	}
+
+	/**
+	 * Testing java.lang.Override in all the files in the nested directory.
+	*/
+	@Test
+	public void testOverride_Dec_0_Ref_1() throws IOException {
+		validateCount("java.lang.Override", 0, 1);
+	}
+
+	/**
+	 * Testing java.lang.Object in all the files in the nested directory.
+	*/
+	@Test
+	public void testObject_Dec_0_Ref_2() throws IOException {
+		validateCount("java.lang.Object", 0, 2);
+	}
+
+	/**
+	 * Testing java.util.List in all the files in the nested directory.
+	*/
+	@Test
+	public void testUtil_List_Dec_0_Ref_3() throws IOException {
+		validateCount("java.util.List", 0, 3);
+	}
+
+	/**
+	 * Testing java.util.ArrayList in all the files in the nested directory.
+	*/
+	@Test
+	public void testUtil_ArrayList_Dec_0_Ref_6() throws IOException {
+		validateCount("java.util.ArrayList", 0, 6);
+	}
+
+	/**
+	 * Testing java.util.LinkedList in all the files in the nested directory.
+	*/
+	@Test
+	public void testUtil_LinkedList_Dec_0_Ref_2() throws IOException {
+		validateCount("java.util.LinkedList", 0, 2);
+	}
+
+	/**
+	 * Testing java.util.HashMap in all the files in the nested directory.
+	*/
+	@Test
+	public void testUtil_HashMap_Dec_0_Ref_2() throws IOException {
+		validateCount("java.util.HashMap", 0, 2);
+	}
+
+	/**
+	 * Testing primitive type int in all the files in the nested directory.
+	*/
+	@Test
+	public void testPrim_int_Dec_0_Ref_1() throws IOException {
+		validateCount("int", 0, 1);
+	}
+
+	/**
+	 * Testing primitive type double in all the files in the nested directory.
+	*/
+	@Test
+	public void testPrim_double_Dec_0_Ref_2() throws IOException {
+		validateCount("double", 0, 2);
+	}
+
+	/**
+	 * Testing primitive type boolean in all the files in the nested directory.
+	*/
+	@Test
+	public void testPrim_boolean_Dec_0_Ref_1() throws IOException {
+		validateCount("boolean", 0, 1);
+	}
+
+	/**
+	 * Testing primitive type float in all the files in the nested directory.
+	*/
+	@Test
+	public void testPrim_float_Dec_0_Ref_1() throws IOException {
+		validateCount("float", 0, 5);
+	}
+
 
 }

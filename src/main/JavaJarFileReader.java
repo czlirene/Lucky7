@@ -39,7 +39,7 @@ public class JavaJarFileReader {
     private static boolean isJarFile(String fileName){
         return fileName.endsWith(".jar");
     }
-
+/*
     /**
      * From a given directory path, find and read the content of all JAVA files,
      * and return their content as an array list of strings. 
@@ -78,6 +78,54 @@ public class JavaJarFileReader {
 
         return filesContent;
     } 
+*/
+		/**
+	 * From a given directory path, find and read the content of all JAVA files, and
+	 * return their content as an array list of strings.
+	 * 
+	 * @param dirPath
+	 *            Directory to be searched
+	 * @return ArrayList<String> List of each JAVA file as String
+	 * @throws DirectoryNotEmptyException
+	 *             Thrown if a directory cannot be found
+	 * @throws IOException
+	 *             Thrown if any other IO problems are encountered.
+	 */
+	public static ArrayList<String> getAllFilesToString(String dirPath) throws DirectoryNotEmptyException, IOException {
+		String temp = dirPath;
+		ArrayList<String> filesContent = new ArrayList<String>();
+		
+		// Recursively find all ".jar" files in the given directory path
+		ArrayList<String> jarFileNames = getJarFileNames(dirPath);
+		ArrayList<String> javaFileNames = getJavaFileNames(dirPath);
+		String fileContent = "";
+
+		// Extract all the ".jar" files into the given directory path
+		for (String jarFile : jarFileNames) {
+			dirPath = dirPath + "\\------";
+			extractJarFile(jarFile, dirPath);
+			filesContent.addAll(getAllFilesToString(dirPath));
+			dirPath = dirPath + "\\----------";
+		
+		}
+		
+		for (String fileName : javaFileNames) {
+			if (isJavaFile(fileName)) {
+				fileContent = getJavaFileContentToString(fileName);
+			}
+			
+			filesContent.add(fileContent);
+		}
+		
+
+		// Recursively find all ".java" files in the given directory path
+		
+
+		// Retrieve the content of each ".java" file, and store it into the list
+		
+		
+		return filesContent;
+	}
 
     /**
      * Given a JAR file, and the target directory path, extract the JAR file
