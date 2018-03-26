@@ -72,7 +72,7 @@ java.lang.Override
 
 java.util.List
     Dec count: 0
-    Ref count: 3
+    Ref count: 4
 
 java.util.ArrayList
     Dec count: 0
@@ -80,7 +80,7 @@ java.util.ArrayList
 
 java.util.LinkedList
     Dec count: 0
-    Ref count: 2
+    Ref count: 3
 
 java.util.HashMap
     Dec count: 0
