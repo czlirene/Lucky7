@@ -16,10 +16,11 @@ import org.eclipse.jdt.core.dom.*;
  * source code, and count the number of declarations of references for each of
  * the java types present.
  *
+ * @author Esther C.
  * @author Sze Lok Irene Chan
- * @version 1.0.0
+ * @version 2.5
  *
- * @since 20 March 2018
+ * @since 26 March 2018
  */
 public class TypeVisitor extends ASTVisitor {
 
@@ -29,8 +30,6 @@ public class TypeVisitor extends ASTVisitor {
 	private static HashMap<String, Integer> decCounter = new HashMap<String, Integer>();
 
 	private static HashMap<String, Integer> refCounter = new HashMap<String, Integer>();
-
-	private static boolean debug = false;
 
 	/**
 	 * Checks if the passed type already exists within the types list. [false -> add
@@ -185,7 +184,6 @@ public class TypeVisitor extends ASTVisitor {
         if (returnType != null && !returnType.isPrimitiveType() && returnType.isSimpleType()) {
             ITypeBinding iBinding = node.getReturnType2().resolveBinding();
             String type = iBinding.getQualifiedName();
-            System.out.println("METHOD DEC: " + type);
             
             addTypeToList(type);
             incRefCount(type);
@@ -198,8 +196,6 @@ public class TypeVisitor extends ASTVisitor {
 			
 			addTypeToList(declaringclassName);
 			incRefCount(declaringclassName);
-			
-			System.out.println("result5: " + declaringclassName);
 		}
 
         return true;
@@ -228,21 +224,13 @@ public class TypeVisitor extends ASTVisitor {
 			if (intType.isSimpleType()) {	
 				ITypeBinding[] ibind = node.resolveBinding().getInterfaces();
 			
-				//ITypeBinding typeBind = type.resolveBinding();
 				String type2 = ibind[0].getQualifiedName();
 
-				System.out.println("\nSuperInterfaceType: " + type2);
-				
 				addTypeToList(type2);
 				incRefCount(type2);
 			}
 		}
-		
-		//SimpleType nodeType = (SimpleType) node.getType();
-		
-
-		
-		
+				
 		if (!node.isLocalTypeDeclaration()) {
 			// get the Identifier and add +1 to the declaration count
 			ITypeBinding typeBind = node.resolveBinding();
@@ -261,9 +249,6 @@ public class TypeVisitor extends ASTVisitor {
 			addTypeToList(localClassName);
 			incDecCount(localClassName);
 		}
-		
-		
-		
 		
 		return true;
 		
@@ -288,34 +273,9 @@ public class TypeVisitor extends ASTVisitor {
 	 */
 	@Override
 	public boolean visit(SimpleName node) {
-		// isDeclaration() returns true if a name is defined:
-		// the type name in a TypeDeclaration node -> DONE
-		// the method name in a MethodDeclaration node providing isConstructor is false -> WE DON'T HAVE TO BOTHER
-		// The variable name in any type of VariableDeclaration node -> WE HAVE TO BOTHER
-		// The enum type name in a EnumDeclaration node -> DONE
-		// The enum constant name in an EnumConstantDeclaration node -> WE DON'T HAVE TO BOTHER
-		// The variable name in an EnhancedForStatement node -> WE DON'T HAVE TO BOTHER
-		// The type variable name in a TypeParameter node -> WE DON'T HAVE TO BOTHER
-		// The type name in an AnnotationTypeDeclaration node -> DONE
-		// The member name in an AnnotationTypeMemberDeclaration node -> WE DON'T HAVE TO BOTHER
-		
-		// NOTICE HOW ImportDeclaration and PackageDeclaration types
-		// will ALWAYS pass this, since they are not listed above.
-		// Therefore we can use SimpleName for ImportDeclaration and PackageDeclaration;
-		// However, the PackageDeclaration will have the bindtype of 1,
-		// so it will not be counted in this node -> Gotta count the PackageDeclaration
-		// in a separate node
 		if (!node.isDeclaration())
 		{	
 			String type1 = node.getFullyQualifiedName();
-			// Determine what kind of binding this is.
-			// bindtype == 1 if it's a package binding -> DONE
-			// bindtype == 2 if it's a type binding -> DONE
-			// bindtype == 3 if it's a field or local variable binding -> WE DON'T HAVE TO BOTHER
-			// bindtype == 4 if it's a method or constructor binding -> DONE
-			// bindtype == 5 if it's a annotation binding -> DONE
-			// bindtype == 6 if it's a member value pair binding
-			// If the binding null, then set the bindtype to 0
 			IBinding binding = node.resolveBinding();
 			int bindtype;
 			
@@ -343,16 +303,12 @@ public class TypeVisitor extends ASTVisitor {
 				addTypeToList(importingNameQualified);
 				incRefCount(importingNameQualified);
 				
-				//System.out.println("result4: " + importingNameQualified);
 				return true;
 			}
 			else if (parent.getClass().getName().contains("ImportDeclaration") && levelCounter != 1) {
 				return true;
 			}
-			
-			//if (debug)
-				//System.out.println(type1 + "'s bindtype: " + bindtype);
-			
+						
 			if (bindtype == 2) {
 				ITypeBinding typeBind = node.resolveTypeBinding();
 				String type2 = typeBind.getName();
@@ -371,64 +327,10 @@ public class TypeVisitor extends ASTVisitor {
 						addTypeToList(type);
 						incRefCount(type);
 						
-						//System.out.println("result1: " + type);
 					}
 				}
-				
-//				// taking care of the rest of the SimpleName types
-//				else {
-//					// check if the identifier part of the node name is the same as
-//					// the identifier of the name after resolving binding.
-//					// If they are equal, then add this to the ref count.
-//					if (type1.equals(type2)) {
-//						String type = typeBind.getQualifiedName();
-//						addTypeToList(type);
-//						incRefCount(type);
-//						
-//						System.out.println("result2: " + type);
-//					}
-//				}
 			}
-			
-			// if the bindtype is 0, add the reference counter;
-			// this takes care of the cases where there is a reference to a random class
-			// that has not been implemented.
-//			else if (bindtype == 0) {
-//				// see if this is from SimpleType
-//				// if it is not, don't count it in
-//				if (parent.getClass().getName().contains("SimpleType")) {
-//					SimpleType sNode = (SimpleType) parent;
-//					Name simpletypeName = sNode.getName();
-//					String simpletypeNameQualified = simpletypeName.getFullyQualifiedName();
-//					
-//					addTypeToList(simpletypeNameQualified);
-//					incRefCount(simpletypeNameQualified);
-//					
-//					//System.out.println("result3: " + simpletypeNameQualified);
-//				}
-//			}
-
-			// if the bindtype is 4, add the reference counter ONLY IF
-			// the parent node is MethodDeclaration and only if the MethodDeclaration node
-			// is a constructor
-//			else if (bindtype == 4) {
-//				if (parent.getClass().getName().contains("MethodDeclaration")) {
-//					MethodDeclaration mNode = (MethodDeclaration) parent;
-//					
-//					if (mNode.isConstructor()) {
-//						IMethodBinding methodBinding = mNode.resolveBinding();
-//						ITypeBinding declaringclass = methodBinding.getDeclaringClass();
-//						String declaringclassName = declaringclass.getQualifiedName();
-//						
-//						addTypeToList(declaringclassName);
-//						incRefCount(declaringclassName);
-//						
-//						//System.out.println("result5: " + declaringclassName);
-//					}
-//				}
-//			}
 		}
-
 		return true;
 	}
 	
@@ -461,7 +363,6 @@ public class TypeVisitor extends ASTVisitor {
 		
 		if (node.getPrimitiveTypeCode().toString() != "void") {
 			
-			//System.out.println("PrimitiveType: " + type);
 			addTypeToList(type);
 			incRefCount(type);
 		}
@@ -488,19 +389,13 @@ public class TypeVisitor extends ASTVisitor {
 		ITypeBinding typeBind = node.resolveBinding();
 		String type = typeBind.getQualifiedName();
 		
-		System.out.println("ArrayType: " + type);
-		
 		addTypeToList(type);
 		incRefCount(type);
-		
-		
 		
 		if (node.getElementType().isSimpleType()) {
 			SimpleType nodeType = (SimpleType) node.getElementType();
 			ITypeBinding typeBind2 = nodeType.resolveBinding();
 			String type2 = typeBind2.getQualifiedName();
-			
-			System.out.println("ArrayTypeElement: " + type2);
 			
 			addTypeToList(type2);
 			incRefCount(type2);
@@ -513,85 +408,58 @@ public class TypeVisitor extends ASTVisitor {
 	public boolean visit(SingleVariableDeclaration node) {
 		// if the variable refers to some array, we need to add +1 to the reference
 		// get the name of the variable
-		SimpleName variableName = node.getName();
-		ITypeBinding nameBind = variableName.resolveTypeBinding();
-		String type = nameBind.getQualifiedName();
-		
-//		if (type.contains("[]")) {
-//			addTypeToList(type);
-//			incRefCount(type);
-//		}
 		
 		if (node.getType().isSimpleType()) {
 			SimpleType nodeType = (SimpleType) node.getType();
 			ITypeBinding typeBind2 = nodeType.resolveBinding();
 			String type2 = typeBind2.getQualifiedName();
-			
-			System.out.println("SingleVarDeclaration: " + type2);
-			
+						
 			addTypeToList(type2);
 			incRefCount(type2);
 		}
 		
-		
 		return true;
 	}
+
 	@Override
 	public boolean visit(ClassInstanceCreation node) {
-
-
 		if (node.getType().isSimpleType()) {
-//			SimpleType nodeType = (SimpleType) node.getType();
-//			ITypeBinding typeBind = nodeType.resolveBinding();
-//			String type = typeBind.getQualifiedName();
-//			
 			ITypeBinding typeBind = node.resolveTypeBinding();
 			String type = typeBind.getQualifiedName();
-			System.out.println("ClassInstance: " + type);
 			
 			addTypeToList(type);
 			incRefCount(type);
 		}
-		
 		
 		return true;
 	}
 	
 	@Override
 	public boolean visit(ParameterizedType node) {
-		
 		List<Type> typeArgs = node.typeArguments();
 		for (Type arg : typeArgs) {
 			String type = arg.resolveBinding().getQualifiedName();
 			addTypeToList(type);
 			incRefCount(type);
-			
-			System.out.println("typeArgument: " + type);
 		}
-		
 		return true;
 	}
 	
 	@Override
 	public boolean visit(MarkerAnnotation node) {
-		
 		String type = node.resolveTypeBinding().getQualifiedName();
 		addTypeToList(type);
 		incRefCount(type);
 		
-		System.out.println("MarkerAnnotation: " + type);
 		return true;
 	}
 	
 	@Override
 	public boolean visit(VariableDeclarationStatement node) {
-		
 		if (node.getType().isSimpleType()) {
 			SimpleType nodeType = (SimpleType) node.getType();
 			ITypeBinding typeBind = nodeType.resolveBinding();
 			String type = typeBind.getQualifiedName();
-			
-			System.out.println("VariableDeclarationStatement: " + type);
 			
 			addTypeToList(type);
 			incRefCount(type);
@@ -601,13 +469,10 @@ public class TypeVisitor extends ASTVisitor {
 	
 	@Override
 	public boolean visit(MethodInvocation node) {
-		
 		if (node.getExpression() != null && node.getExpression().getNodeType() == ASTNode.QUALIFIED_NAME) {
 			QualifiedName qnNode = (QualifiedName) node.getExpression();
 			if (qnNode.getQualifier().isSimpleName()) {
 				String type = qnNode.getQualifier().resolveTypeBinding().getQualifiedName();
-				
-				System.out.println("MethodInvocation: " + type);
 				
 				addTypeToList(type);
 				incRefCount(type);
@@ -619,13 +484,10 @@ public class TypeVisitor extends ASTVisitor {
 	
 	@Override
 	public boolean visit(FieldDeclaration node) {
-		
 		if (node.getType().isSimpleType()) {
 			SimpleType nodeType = (SimpleType) node.getType();
 			ITypeBinding typeBind = nodeType.resolveBinding();
 			String type = typeBind.getQualifiedName();
-			
-			System.out.println("FieldDeclaration: " + type);
 			
 			addTypeToList(type);
 			incRefCount(type);

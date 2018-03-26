@@ -8,18 +8,14 @@ import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 
-import test.TestSuite;
-
-
 /**
- * Takes a pathname to indicate a directory of interest and a String to indicate
- * a fully qualified name of a Java type. Counts the number of declarations of a
+ * Takes a pathname to indicate a directory of interest. Counts the number of declarations of a
  * Java type and references of each occurrence of that type within that
- * directory.
+ * directory (recursively).
  *
  * @author Sze Lok Irene Chan
  * @author Josh Schijns
- * @since 13 March 2018
+ * @since 26 March 2018
  *
  */
 public class TypeFinder {
@@ -52,7 +48,7 @@ public class TypeFinder {
 	 */
 	public static final String USAGE_MESSAGE = "Usage: java TypeFinder <directory>";
 	/**
-	 * TODO This is currently unused.
+	 * TODO: This is currently unused.
 	 */
 	public static final String PROG_DESCRIPTION_MSG = "Determine the numerical count of declarations and references of a specified Java type for all Java files found in the given directory.";
 
@@ -144,10 +140,6 @@ public class TypeFinder {
 
 			cu.accept(visitor);
 		}
-		// This will print all the types out with corresponding decclarations and references
-		// in the format that has to be printed to console.
-		// Not a debug message :)
-		// TypeVisitor.printTypes();
 
 		Map<String, Integer> decCounter = visitor.getDecCount();
 		Map<String, Integer> refCounter = visitor.getRefCount();
