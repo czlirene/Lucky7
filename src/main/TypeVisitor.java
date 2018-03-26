@@ -132,7 +132,7 @@ public class TypeVisitor extends ASTVisitor {
 	/*
 	 * ============================== ASTVisitor FUNCTIONS ==============================
 	 */
-
+	
 	/**
 	 * Visits an annotation type declaration AST node type. Looks for
 	 *
@@ -195,53 +195,24 @@ public class TypeVisitor extends ASTVisitor {
 	 */
 	@Override
 	public boolean visit(TypeDeclaration node) {
-		// get the Identifier and add +1 to the declaration count
-		ITypeBinding typeBind = node.resolveBinding();
-		String type = typeBind.getQualifiedName();
+		if (!node.isLocalTypeDeclaration()) {
+			// get the Identifier and add +1 to the declaration count
+			ITypeBinding typeBind = node.resolveBinding();
+			String type = typeBind.getQualifiedName();
 
-		addTypeToList(type);
-		incDecCount(type);
-		
-		// If there are TypeParameters, add +1 to the reference count
-		// for each TypeParameter
-		List typeParameters = node.typeParameters();
-		if (typeParameters != null) {
-			for (int i = 0; i < typeParameters.size(); i++) {
-				TypeParameter typeParameter = (TypeParameter) typeParameters.get(i);
-				ITypeBinding typeParameterBind = typeParameter.resolveBinding();
-				String typeParameterName = typeParameterBind.getQualifiedName();
-				
-				addTypeToList(typeParameterName);
-				incRefCount(typeParameterName);
-			}
+			addTypeToList(type);
+			incDecCount(type);
 		}
 		
-		// If the interface is extending some Types, add +1 to the reference count
-		// for each super interfaces
-		List superinterfaces = node.superInterfaceTypes();
-		if (superinterfaces != null) {
-			for (int i = 0; i < superinterfaces.size(); i++) {
-				Type superinterfaceType = (Type) superinterfaces.get(i);
-				ITypeBinding superinterfaceBind = superinterfaceType.resolveBinding();
-				String superinterfaceName = superinterfaceBind.getQualifiedName();
-							
-				addTypeToList(superinterfaceName);
-				incRefCount(superinterfaceName);
-			}
+		// if it is the local class declaration.
+		else {
+			// find the identifier and add +1 to declaration
+			SimpleName localClassSimpleName = node.getName();
+			String localClassName = localClassSimpleName.getFullyQualifiedName();
+			
+			addTypeToList(localClassName);
+			incDecCount(localClassName);
 		}
-		
-		if (!node.isInterface()) {
-			// If the class/interface is extending some Type, add +1 to the reference count
-			Type superclass = node.getSuperclassType();
-			if (superclass != null) {
-				ITypeBinding superclassBind = superclass.resolveBinding();
-				String superclassName = superclassBind.getQualifiedName();
-							
-				addTypeToList(superclassName);
-				incRefCount(superclassName);
-			}
-		}
-
 		return true;
 	}
 	
@@ -265,15 +236,15 @@ public class TypeVisitor extends ASTVisitor {
 	@Override
 	public boolean visit(SimpleName node) {
 		// isDeclaration() returns true if a name is defined:
-		// the type name in a TypeDeclaration node
-		// the method name in a MethodDeclaration node providing isConstructor is false
-		// The variable name in any type of VariableDeclaration node
-		// The enum type name in a EnumDeclaration node
-		// The enum constant name in an EnumConstantDeclaration node
-		// The variable name in an EnhancedForStatement node
-		// The type variable name in a TypeParameter node
-		// The type name in an AnnotationTypeDeclaration node
-		// The member name in an AnnotationTypeMemberDeclaration node
+		// the type name in a TypeDeclaration node -> DONE
+		// the method name in a MethodDeclaration node providing isConstructor is false -> WE DON'T HAVE TO BOTHER
+		// The variable name in any type of VariableDeclaration node -> WE DON'T HAVE TO BOTHER
+		// The enum type name in a EnumDeclaration node -> DONE
+		// The enum constant name in an EnumConstantDeclaration node -> WE DON'T HAVE TO BOTHER
+		// The variable name in an EnhancedForStatement node -> WE DON'T HAVE TO BOTHER
+		// The type variable name in a TypeParameter node -> WE DON'T HAVE TO BOTHER
+		// The type name in an AnnotationTypeDeclaration node -> DONE
+		// The member name in an AnnotationTypeMemberDeclaration node -> WE DON'T HAVE TO BOTHER
 		
 		// NOTICE HOW ImportDeclaration and PackageDeclaration types
 		// will ALWAYS pass this, since they are not listed above.
@@ -281,9 +252,13 @@ public class TypeVisitor extends ASTVisitor {
 		// However, the PackageDeclaration will have the bindtype of 1,
 		// so it will not be counted in this node -> Gotta count the PackageDeclaration
 		// in a separate node
+		System.out.println("debug1: " + node.getFullyQualifiedName());
+		
 		if (!node.isDeclaration())
 		{
 			String type1 = node.getFullyQualifiedName();
+			
+			System.out.println("debug2: " + type1);
 			
 			// Determine what kind of binding this is.
 			// bindtype == 1 if it's a package binding -> DONE
@@ -363,6 +338,7 @@ public class TypeVisitor extends ASTVisitor {
 					MethodDeclaration mNode = (MethodDeclaration) parent;
 					
 					if (mNode.isConstructor()) {
+						System.out.println(type1);
 						addTypeToList(type1);
 						incRefCount(type1);
 					}

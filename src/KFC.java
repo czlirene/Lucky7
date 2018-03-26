@@ -1,1 +1,3 @@
-public class KFC<String> { }
+public class KFC <>{
+	List<String> something;
+}

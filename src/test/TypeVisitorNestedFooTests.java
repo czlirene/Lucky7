@@ -82,6 +82,13 @@ public class TypeVisitorNestedFooTests {
 			ref_count = visitor.getRefCount().get(type);
 		} catch (Exception e) {
 		}
+		
+		Map<String, Integer> refmap = visitor.getRefCount();
+		Map<String, Integer> decmap = visitor.getDecCount();
+		
+		System.out.println("declaration count: " + decmap);
+		System.out.println("reference count: " + refmap);
+		System.out.println();
 	
 		assertEquals(expectedDeclarationCount, decl_count);
 		assertEquals(expectedReferenceCount, ref_count);
